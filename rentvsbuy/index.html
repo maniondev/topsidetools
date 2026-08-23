@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rent vs Buy — Home Calculator</title>
-<meta name="description" content="A free iPhone calculator that compares renting and buying on total net worth — opportunity cost, home equity, break-even year and all. No ads, no paywall.">
+<title>Rent vs Buy · Home Calculator</title>
+<meta name="description" content="A free iPhone calculator that compares renting and buying on total net worth: opportunity cost, home equity, break-even year and all. No ads, no paywall.">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Rent vs Buy — Home Calculator">
+<meta property="og:title" content="Rent vs Buy · Home Calculator">
 <meta property="og:description" content="Compare renting and buying on total net worth, not just monthly payments. Free, no ads, no paywall.">
 <meta property="og:url" content="https://topsidetools.com/rentvsbuy/">
 <meta property="og:image" content="https://topsidetools.com/rentvsbuy/logo.png">
@@ -358,7 +358,7 @@
   .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
   .js .reveal.in { opacity: 1; transform: none; }
   /* Anything already on screen at load (including after a #support jump from
-     inside the app) appears instantly — a deep link must never land on blank. */
+     inside the app) appears instantly; a deep link must never land on blank. */
   .js .reveal.now { transition: none; }
 
   @media (prefers-reduced-motion: reduce) {
@@ -379,7 +379,7 @@
   <h1 class="wordmark">Rent vs Buy</h1>
   <p class="subtitle">Home Calculator</p>
   <div class="divider"></div>
-  <p class="desc">Renting and buying both have hidden costs. Rent vs Buy accounts for the opportunity cost of your down payment, home equity, invested savings, and more — so you can see the full financial picture.</p>
+  <p class="desc">Renting and buying both have hidden costs. Rent vs Buy accounts for the opportunity cost of your down payment, home equity, invested savings, and more, so you can see the full financial picture.</p>
 
   <div class="buttons">
     <a href="https://apps.apple.com/us/app/rent-vs-buy-calculator/id6768829509" class="btn btn-ios">
@@ -411,7 +411,7 @@
     <div class="shots-head reveal">
       <p class="eyebrow">A real answer, not a rule of thumb</p>
       <h2>See which one actually wins</h2>
-      <p class="lede">Most calculators stop at the monthly payment. This one runs both paths all the way out — equity, appreciation, invested savings, taxes — and tells you who ends up ahead.</p>
+      <p class="lede">Most calculators stop at the monthly payment. This one runs both paths all the way out, covering equity, appreciation, invested savings and taxes, then tells you who ends up ahead.</p>
     </div>
 
     <div class="shot-row">
@@ -452,7 +452,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
         </div>
         <h3>Opportunity cost</h3>
-        <p>The renter invests the down payment and closing costs — and any month renting is cheaper — at your expected market return.</p>
+        <p>The renter invests the down payment and closing costs, plus any month renting is cheaper, at your expected market return.</p>
       </div>
 
       <div class="card reveal">
@@ -460,7 +460,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
         </div>
         <h3>Break-even year</h3>
-        <p>Find the point where the winning strategy switches — and the appreciation or stock return that would flip it.</p>
+        <p>Find the point where the winning strategy switches, and the appreciation or stock return that would flip it.</p>
       </div>
 
       <div class="card reveal">
@@ -468,7 +468,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>
         </div>
         <h3>Sensitivity analysis</h3>
-        <p>A grid of home appreciation against stock return, so you can see how fragile — or safe — the answer really is.</p>
+        <p>A grid of home appreciation against stock return, so you can see how fragile or safe the answer really is.</p>
       </div>
 
       <div class="card reveal">
@@ -484,7 +484,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h16v18l-3-2-2 2-3-2-3 2-2-2-3 2z"/><path d="M8 8h8M8 12h8"/></svg>
         </div>
         <h3>Mortgage interest deduction</h3>
-        <p>Compares itemizing against the standard deduction each year, and invests the difference — shrinking as your interest does.</p>
+        <p>Compares itemizing against the standard deduction each year, and invests the difference, which shrinks as your interest does.</p>
       </div>
     </div>
   </div>
@@ -545,7 +545,7 @@
       return r.top < (window.innerHeight || document.documentElement.clientHeight) && r.bottom > 0;
     }
 
-    // Show — with no fade — everything already in view. Runs again on load and
+    // Show everything already in view, with no fade. Runs again on load and
     // on hashchange so arriving straight at #support shows a finished section.
     function showVisibleNow() {
       els.forEach(function (el) {
@@ -573,7 +573,7 @@
     // The in-app button opens .../#support. Don't trust the browser's native
     // fragment scroll for it: the screenshots below settle after the jump, so
     // the target moves and the landing can miss (or not happen at all). Redo it
-    // ourselves once on load — unless the reader has already scrolled.
+    // ourselves once on load, unless the reader has already scrolled.
     var touched = false;
     window.addEventListener('wheel',     function () { touched = true; }, { passive: true, once: true });
     window.addEventListener('touchstart',function () { touched = true; }, { passive: true, once: true });
