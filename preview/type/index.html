@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Type comparison</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--cream:#F0EAE0;--red:#E5384A;--orange:#EA862A;--gold:#DFB945;--text:#1E1410;--muted:#7A6050;--ink:#4A3020;--line:rgba(90,68,32,0.15)}
+  body{background:var(--cream);color:var(--text);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
+  .stripe{height:5px;background:linear-gradient(90deg,var(--red),var(--orange) 50%,var(--gold))}
+  .shell{max-width:1000px;margin:0 auto;padding:0 32px}
+  .tag{margin:44px 0 6px;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange)}
+  .note{font-size:13px;color:var(--muted);margin-bottom:22px}
+  .sample{border:1px solid var(--line);border-radius:20px;padding:38px 34px;background:rgba(255,252,246,.55);margin-bottom:14px}
+
+  /* ---- A: Cormorant (current) ---- */
+  .A h1{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:clamp(48px,6.4vw,84px);line-height:1.02;letter-spacing:-.025em;color:var(--ink);margin-bottom:14px}
+  .A .sub{font-family:'DM Sans',sans-serif;font-size:18.5px;color:var(--muted)}
+  .A .cardtitle{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:44px;color:#fff;line-height:1.06;margin-bottom:12px}
+  .A .cardbody{font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.72;color:rgba(255,255,255,.86)}
+
+  /* ---- B: system sans, streamchatgenerator.com ---- */
+  .B h1{font-family:-apple-system,system-ui,"Segoe UI",sans-serif;font-weight:680;font-size:clamp(44px,5.6vw,72px);line-height:1.04;letter-spacing:-.033em;color:var(--ink);margin-bottom:14px}
+  .B .sub{font-family:-apple-system,system-ui,"Segoe UI",sans-serif;font-size:18px;color:var(--muted)}
+  .B .cardtitle{font-family:-apple-system,system-ui,"Segoe UI",sans-serif;font-weight:680;font-size:38px;letter-spacing:-.028em;color:#fff;line-height:1.08;margin-bottom:12px}
+  .B .cardbody{font-family:-apple-system,system-ui,"Segoe UI",sans-serif;font-size:16px;line-height:1.65;color:rgba(255,255,255,.86)}
+
+  .poster{margin-top:26px;border-radius:22px;padding:34px;background:linear-gradient(150deg,#0D5068,#093A4C 62%,#0b3140)}
+  .eyebrow{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:12px}
+  .chips{display:flex;gap:8px;margin-top:18px}
+  .chip{font-size:12px;padding:6px 12px;border-radius:20px;background:rgba(255,255,255,.14);color:#fff}
+  .foot{padding:40px 0 60px;font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="stripe"></div>
+<div class="shell">
+
+  <p class="tag">A — Cormorant Garamond (what Topside uses now)</p>
+  <p class="note">Serif display face + DM Sans body. Two webfonts from Google Fonts.</p>
+  <div class="sample A">
+    <h1>Topside Tools</h1>
+    <p class="sub">Apps for iPhone, Android, and the web.</p>
+    <div class="poster">
+      <p class="eyebrow">On the App Store</p>
+      <p class="cardtitle">Rent vs Buy</p>
+      <p class="cardbody">Renting and buying both hide their real costs. This compares them on total net worth rather than the monthly payment, so you see which actually leaves you better off, and in what year.</p>
+      <div class="chips"><span class="chip">Opportunity cost</span><span class="chip">Free, no ads</span></div>
+    </div>
+  </div>
+
+  <p class="tag">B — System sans (what streamchatgenerator.com and manionjohn.com use)</p>
+  <p class="note">-apple-system / system-ui at weight 680, tight tracking. No webfont loaded at all.</p>
+  <div class="sample B">
+    <h1>Topside Tools</h1>
+    <p class="sub">Apps for iPhone, Android, and the web.</p>
+    <div class="poster">
+      <p class="eyebrow">On the App Store</p>
+      <p class="cardtitle">Rent vs Buy</p>
+      <p class="cardbody">Renting and buying both hide their real costs. This compares them on total net worth rather than the monthly payment, so you see which actually leaves you better off, and in what year.</p>
+      <div class="chips"><span class="chip">Opportunity cost</span><span class="chip">Free, no ads</span></div>
+    </div>
+  </div>
+
+  <p class="foot">Same layout, same colours, same copy. Only the typeface changes.</p>
+</div>
+</body>
+</html>
