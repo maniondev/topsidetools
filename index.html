@@ -19,12 +19,10 @@
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   :root{
-    --cream:#F0EAE0; --red:#E5384A; --orange:#EA862A; --gold:#DFB945;
-    --text:#1E1410; --muted:#7A6050; --ink:#4A3020; --line:rgba(90,68,32,0.15);
+    --cream:#1C0B00; --red:#E5384A; --orange:#EA862A; --gold:#DFB945;
+    --text:#EFE4D8; --muted:#A5907E; --ink:#F4ECE0; --line:rgba(255,255,255,0.12);
   }
-  html{background-color:var(--cream);
-    background-image:linear-gradient(rgba(240,234,224,0.68),rgba(240,234,224,0.68)),url('/bg.svg');
-    background-size:auto,240%;background-position:0 0,top left;background-repeat:no-repeat,repeat-y}
+  html{background-color:var(--cream)}
   body{color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
   a{text-decoration:none;color:inherit}
   .stripe{height:5px;background:linear-gradient(90deg,var(--red) 0%,var(--orange) 50%,var(--gold) 100%)}
@@ -47,14 +45,14 @@
   .poster{
     position:relative;display:grid;grid-template-columns:1.05fr 0.95fr;gap:40px;align-items:end;
     border-radius:28px;overflow:hidden;padding:44px 44px 0;min-height:400px;
-    box-shadow:0 16px 46px rgba(90,40,10,0.11);
+    box-shadow:0 18px 50px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.09);
   }
   .poster.rvb{background:linear-gradient(150deg,#0D5068 0%,#093A4C 62%,#0b3140 100%)}
   .poster.dd{background:linear-gradient(150deg,#0C4A5C 0%,#082E3A 60%,#0a2630 100%)}
   .poster.scg{background:linear-gradient(150deg,#C4303F 0%,#8E2028 65%,#75171f 100%)}
   .poster .copy{padding-bottom:46px;color:#F4EDE2}
   .poster .eyebrow{font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;opacity:.72;margin-bottom:13px}
-  .poster h2{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,3.6vw,44px);font-weight:600;line-height:1.06;margin-bottom:12px;color:#fff}
+  .poster h2{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,3.6vw,44px);font-weight:700;line-height:1.06;margin-bottom:12px;color:#fff}
   .poster p{font-size:16px;line-height:1.72;opacity:.86;max-width:42ch;margin-bottom:24px}
   .poster .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
   .chip{font-size:12px;padding:6px 12px;border-radius:20px;background:rgba(255,255,255,0.14);color:#fff}
@@ -112,6 +110,18 @@
   .card-logo{width:62px;height:62px;border-radius:15px;display:block;margin-bottom:18px;
              box-shadow:0 8px 22px rgba(0,0,0,0.34)}
   @media(max-width:520px){ .card-logo{width:54px;height:54px;border-radius:13px;margin-bottom:14px} }
+
+  /* cream card on the dark ground: flip the interior to dark type */
+  .poster.light{background:linear-gradient(150deg,#F5F0E7 0%,#EAE2D4 62%,#E0D6C4 100%);
+                border:1px solid rgba(90,68,32,0.18)}
+  .poster.light .copy{color:#3A2A1C}
+  .poster.light h2{color:#22160D}
+  .poster.light .eyebrow{color:#6E5642;opacity:1}
+  .poster.light p{color:#5C4835;opacity:1}
+  .poster.light .chip{background:rgba(60,42,26,0.10);color:#3A2A1C}
+  .poster.light .cta{background:#22160D;color:#F5F0E7}
+  .poster.light .cta:hover{background:#3A2A1C}
+  .poster.light .card-logo{box-shadow:0 8px 22px rgba(60,42,26,0.26)}
 </style>
 </head>
 <body>
@@ -130,7 +140,7 @@
 
   <div class="stack">
 
-    <a class="poster rvb" href="/rentvsbuy/">
+    <a class="poster rvb light" href="/rentvsbuy/">
       <div class="copy">
         <img class="card-logo" src="/rentvsbuy/icon.png" alt="Rent vs Buy app icon">
         <p class="eyebrow">On the App Store</p>
