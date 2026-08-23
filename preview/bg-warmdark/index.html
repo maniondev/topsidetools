@@ -111,6 +111,18 @@
   .card-logo{width:62px;height:62px;border-radius:15px;display:block;margin-bottom:18px;
              box-shadow:0 8px 22px rgba(0,0,0,0.34)}
   @media(max-width:520px){ .card-logo{width:54px;height:54px;border-radius:13px;margin-bottom:14px} }
+
+  /* cream card on the dark ground: flip the interior to dark type */
+  .poster.light{background:linear-gradient(150deg,#F5F0E7 0%,#EAE2D4 62%,#E0D6C4 100%);
+                border:1px solid rgba(90,68,32,0.18)}
+  .poster.light .copy{color:#3A2A1C}
+  .poster.light h2{color:#22160D}
+  .poster.light .eyebrow{color:#6E5642;opacity:1}
+  .poster.light p{color:#5C4835;opacity:1}
+  .poster.light .chip{background:rgba(60,42,26,0.10);color:#3A2A1C}
+  .poster.light .cta{background:#22160D;color:#F5F0E7}
+  .poster.light .cta:hover{background:#3A2A1C}
+  .poster.light .card-logo{box-shadow:0 8px 22px rgba(60,42,26,0.26)}
 </style>
 </head>
 <body>
@@ -129,7 +141,19 @@
 
   <div class="stack">
 
-    <a class="poster rvb" href="/rentvsbuy/">
+    <a class="poster scg" href="/streamchat/">
+      <div class="copy">
+        <img class="card-logo" src="/streamchat/icon.png" alt="Stream Chat Generator app icon">
+        <p class="eyebrow">Private beta</p>
+        <h2>Stream Chat Generator</h2>
+        <p>Fake chat gives itself away through rhythm. This generates chat that reacts to what actually happens in your video, arriving on a curve that drifts and surges the way real chat does.</p>
+        <div class="chips"><span class="chip">Reacts to your footage</span><span class="chip">Transparent overlay</span></div>
+        <span class="cta">Request access →</span>
+      </div>
+      <div class="shot"><div class="webshot"><img src="/streamchat/hero.png" alt=""></div></div>
+    </a>
+
+    <a class="poster rvb light" href="/rentvsbuy/">
       <div class="copy">
         <img class="card-logo" src="/rentvsbuy/icon.png" alt="Rent vs Buy app icon">
         <p class="eyebrow">On the App Store</p>
@@ -144,18 +168,6 @@
           <span class="p front"><img src="/rentvsbuy/shots/hero-front.png" alt="Rent vs Buy result screen"></span>
         </div>
       </div>
-    </a>
-
-    <a class="poster scg" href="/streamchat/">
-      <div class="copy">
-        <img class="card-logo" src="/streamchat/icon.png" alt="Stream Chat Generator app icon">
-        <p class="eyebrow">Private beta</p>
-        <h2>Stream Chat Generator</h2>
-        <p>Fake chat gives itself away through rhythm. This generates chat that reacts to what actually happens in your video, arriving on a curve that drifts and surges the way real chat does.</p>
-        <div class="chips"><span class="chip">Reacts to your footage</span><span class="chip">Transparent overlay</span></div>
-        <span class="cta">Request access →</span>
-      </div>
-      <div class="shot"><div class="webshot"><img src="/streamchat/hero.png" alt=""></div></div>
     </a>
 
     <a class="poster dd" href="/doomsday/">
