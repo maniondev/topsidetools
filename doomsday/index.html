@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doomsday — The Day of the Week Party Trick</title>
+<meta name="description" content="Doomsday teaches you to name the day of the week for any date in history — instantly, in your head.">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream:  #F0EAE0;
+    --orange: #E05520;
+    --teal:   #0C4A5C;
+    --teal-dark: #082E3A;
+    --muted:  rgba(240,234,224,0.55);
+  }
+
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    background: var(--teal);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stripe {
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--orange) 0%, var(--cream) 100%);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 24px 0;
+    text-align: center;
+  }
+
+  .logo {
+    width: clamp(140px, 27vw, 224px);
+    height: clamp(140px, 27vw, 224px);
+    margin-top: -18%;
+    margin-bottom: 16px;
+    border-radius: 22%;
+    animation: float 4s ease-in-out infinite;
+    filter: drop-shadow(0 16px 40px rgba(0,0,0,0.35));
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-8px); }
+  }
+
+  .wordmark {
+    margin-bottom: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(72px, 18vw, 128px);
+    letter-spacing: -2px;
+    line-height: 1;
+    color: var(--cream);
+  }
+
+  .subtitle {
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: clamp(15px, 3.5vw, 18px);
+    letter-spacing: 0.2em;
+    color: var(--muted);
+  }
+
+  .divider {
+    margin: 20px auto;
+    width: 40px;
+    height: 2px;
+    border-radius: 1px;
+    background: linear-gradient(90deg, var(--orange), var(--cream));
+  }
+
+  .desc {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: clamp(14px, 3vw, 16px);
+    line-height: 1.7;
+    color: var(--muted);
+    max-width: 400px;
+  }
+
+  .buttons {
+    margin-top: 28px;
+    margin-bottom: -28px;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    width: 100%;
+    max-width: 290px;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 22px;
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .btn:hover  { transform: translateY(-2px); }
+  .btn:active { transform: scale(0.98); }
+
+  .btn svg { flex-shrink: 0; }
+
+  .btn-ios {
+    background: var(--cream);
+    color: var(--teal);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  }
+  .btn-ios:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
+
+  .btn-android {
+    background: var(--orange);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(224,85,32,0.28);
+  }
+  .btn-android:hover { box-shadow: 0 8px 24px rgba(224,85,32,0.38); }
+
+  .btn-label { display: flex; flex-direction: column; text-align: left; }
+  .btn-label-sub  { font-size: 10px; font-weight: 400; opacity: 0.7; letter-spacing: 0.05em; line-height: 1; }
+  .btn-label-main { font-size: 15px; font-weight: 500; line-height: 1.3; }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 0 24px 18px;
+    flex-shrink: 0;
+  }
+
+  .free-note {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+
+  .footer-links {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .footer-links a { color: var(--cream); text-decoration: underline; text-underline-offset: 2px; opacity: 0.7; }
+
+  main > * { animation: rise 0.55s ease both; }
+  .logo      { animation-delay: 0s; }
+  .wordmark  { animation-delay: 0.07s; }
+  .subtitle  { animation-delay: 0.12s; }
+  .divider   { animation-delay: 0.17s; }
+  .desc      { animation-delay: 0.22s; }
+  .buttons   { animation-delay: 0.28s; }
+  footer     { animation: rise 0.55s ease both; animation-delay: 0.32s; }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="stripe"></div>
+
+<main>
+  <img src="logo.png" alt="Doomsday logo" class="logo">
+  <h1 class="wordmark">Doomsday</h1>
+  <p class="subtitle">The Day of the Week Party Trick</p>
+  <div class="divider"></div>
+  <p class="desc">Name the day of the week for any date in history — instantly, in your head. Doomsday teaches you the algorithm step by step, then drills you until it's second nature. Impress anyone. Stump everyone.</p>
+
+  <div class="buttons">
+    <a href="#" class="btn btn-ios" style="opacity:0.5;cursor:default;pointer-events:none;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#0C4A5C" aria-hidden="true">
+        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+      </svg>
+      <span class="btn-label">
+        <span class="btn-label-sub">Coming soon on the</span>
+        <span class="btn-label-main">App Store</span>
+      </span>
+    </a>
+
+    <a href="#" class="btn btn-android" style="opacity:0.5;cursor:default;pointer-events:none;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white" aria-hidden="true">
+        <path d="M3 20.5v-17c0-.83 .94-1.3 1.6-.8l14 8.5c.6.37.6 1.23 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z"/>
+      </svg>
+      <span class="btn-label">
+        <span class="btn-label-sub">Coming soon on</span>
+        <span class="btn-label-main">Google Play</span>
+      </span>
+    </a>
+  </div>
+</main>
+
+<footer>
+  <p class="free-note">Ad-free &middot; One-time purchase &middot; No subscriptions</p>
+  <p class="footer-links">&copy; 2026 Doomsday &nbsp;&middot;&nbsp; <a href="https://sites.google.com/view/doomsdaypartytrick/home">Privacy Policy</a></p>
+</footer>
+
+</body>
+</html>

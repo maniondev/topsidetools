@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rent vs. Buy — The Home Decision Calculator</title>
+<meta name="description" content="A free iPhone calculator that compares renting and buying on total net worth — opportunity cost, home equity, break-even year and all. No ads, no paywall.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rent vs. Buy — The Home Decision Calculator">
+<meta property="og:description" content="Compare renting and buying on total net worth, not just monthly payments. Free, no ads, no paywall.">
+<meta property="og:url" content="https://topsidetools.com/rentvsbuy/">
+<meta property="og:image" content="https://topsidetools.com/rentvsbuy/logo.png">
+<link rel="canonical" href="https://topsidetools.com/rentvsbuy/">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream:  #F0EAE0;
+    --cream2: #E7DFD2;
+    --teal:   #0D5068;
+    --teal-d: #093A4C;
+    --orange: #D4501A;
+    --rust:   #A83A0E;
+    --text:   #0A2D3A;
+    --muted:  #4A6B77;
+    --pad:    clamp(60px, 9vw, 100px);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .stripe {
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--teal) 0%, var(--orange) 100%);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .wrap { width: 100%; max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(30px, 5.5vw, 44px);
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 12px;
+  }
+
+  .lede {
+    margin-top: 14px;
+    font-size: clamp(15px, 2.4vw, 17px);
+    line-height: 1.7;
+    color: var(--muted);
+    max-width: 56ch;
+  }
+
+  /* ---------- hero ---------- */
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: clamp(28px, 6vw, 56px) 24px clamp(56px, 8vw, 88px);
+  }
+
+  .logo {
+    width: clamp(116px, 20vw, 168px);
+    height: clamp(116px, 20vw, 168px);
+    border-radius: 22%;
+    margin-bottom: 22px;
+    filter: drop-shadow(0 16px 32px rgba(13,80,104,0.22));
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+  }
+
+  .wordmark {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(48px, 11vw, 86px);
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+
+  .subtitle {
+    margin-top: 12px;
+    font-size: clamp(13px, 3vw, 16px);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .divider {
+    margin: 22px auto;
+    width: 40px;
+    height: 2px;
+    border-radius: 1px;
+    background: linear-gradient(90deg, var(--teal), var(--orange));
+  }
+
+  .desc {
+    font-size: clamp(15px, 2.6vw, 17px);
+    line-height: 1.7;
+    color: var(--muted);
+    max-width: 430px;
+  }
+
+  .buttons {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    width: 100%;
+    max-width: 290px;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 22px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn:hover  { transform: translateY(-2px); }
+  .btn:active { transform: scale(0.98); }
+  .btn svg    { flex-shrink: 0; }
+
+  .btn-ios {
+    background: var(--teal);
+    color: var(--cream);
+    box-shadow: 0 4px 16px rgba(13,80,104,0.28);
+  }
+  .btn-ios:hover { box-shadow: 0 8px 24px rgba(13,80,104,0.38); }
+
+  .btn-android {
+    background: var(--orange);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(212,80,26,0.28);
+    opacity: 0.45;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .btn-label      { display: flex; flex-direction: column; text-align: left; }
+  .btn-label-sub  { font-size: 10px; font-weight: 400; opacity: 0.7; letter-spacing: 0.05em; line-height: 1; }
+  .btn-label-main { font-size: 15px; font-weight: 500; line-height: 1.3; }
+
+  .hero-note {
+    margin-top: 20px;
+    font-size: 12.5px;
+    letter-spacing: 0.03em;
+    color: var(--muted);
+  }
+
+  /* ---------- screenshots ---------- */
+
+  .shots { padding: var(--pad) 0; background: var(--cream2); }
+
+  .shots-head { text-align: center; margin-bottom: clamp(36px, 6vw, 56px); }
+  .shots-head .lede { margin-left: auto; margin-right: auto; }
+
+  .shot-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(18px, 3.5vw, 40px);
+    align-items: start;
+  }
+
+  figure { text-align: center; }
+
+  .shot {
+    width: 100%;
+    height: auto;
+    display: block;
+    /* Reserve the exact space before the image loads, so the page height is
+       stable and a #support jump can't land in the wrong place. */
+    aspect-ratio: 303 / 660;
+    background: rgba(10,45,58,0.04);
+    border-radius: clamp(14px, 2.4vw, 24px);
+    box-shadow:
+      0 2px 6px rgba(10,45,58,0.10),
+      0 14px 34px rgba(10,45,58,0.16);
+    border: 1px solid rgba(10,45,58,0.10);
+  }
+
+  figcaption {
+    margin-top: 16px;
+    font-size: clamp(12px, 2vw, 13.5px);
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  @media (max-width: 620px) {
+    .shot-row { grid-template-columns: 1fr; gap: 44px; max-width: 300px; margin: 0 auto; }
+  }
+
+  /* ---------- features ---------- */
+
+  .features { padding: var(--pad) 0; }
+  .features-head { margin-bottom: clamp(34px, 5vw, 52px); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: clamp(20px, 3vw, 30px);
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid rgba(10,45,58,0.08);
+    border-radius: 16px;
+    padding: 26px 24px;
+    box-shadow: 0 2px 10px rgba(10,45,58,0.05);
+  }
+
+  .card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.1px;
+  }
+
+  .card p { font-size: 14px; line-height: 1.65; color: var(--muted); }
+
+  .ico {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+  }
+  .ico svg { width: 19px; height: 19px; }
+  .ico-teal   { background: rgba(13,80,104,0.10);  color: var(--teal); }
+  .ico-orange { background: rgba(212,80,26,0.10);  color: var(--orange); }
+
+  /* ---------- free band ---------- */
+
+  .free { padding: var(--pad) 0; background: var(--cream2); text-align: center; }
+  .free .lede { margin: 14px auto 0; }
+
+  .pills {
+    margin-top: 28px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .pill {
+    background: #fff;
+    border: 1px solid rgba(10,45,58,0.10);
+    border-radius: 999px;
+    padding: 9px 18px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .pill span { color: var(--orange); font-weight: 700; margin-right: 6px; }
+
+  /* ---------- support ---------- */
+
+  .support {
+    padding: var(--pad) 0;
+    background: var(--teal);
+    color: var(--cream);
+    text-align: center;
+    scroll-margin-top: 5px;
+  }
+
+  .support h2 { color: var(--cream); }
+  .support .eyebrow { color: #F2A07A; }
+  .support .lede { color: rgba(240,234,224,0.78); margin: 16px auto 0; }
+
+  .coffee {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 32px;
+    padding: 16px 32px;
+    border-radius: 14px;
+    background: var(--orange);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 6px 22px rgba(0,0,0,0.22);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+  .coffee:hover  { transform: translateY(-2px); background: #E15B22; box-shadow: 0 10px 28px rgba(0,0,0,0.28); }
+  .coffee:active { transform: scale(0.98); }
+
+  .support-fine {
+    margin-top: 20px;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: rgba(240,234,224,0.55);
+    max-width: 44ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* highlight when arrived at via #support (e.g. from inside the app) */
+  .support:target { animation: flash 1.6s ease 0.2s 1; }
+  @keyframes flash {
+    0%, 100% { background: var(--teal); }
+    35%      { background: var(--teal-d); }
+  }
+
+  /* ---------- footer ---------- */
+
+  footer {
+    padding: 34px 24px 40px;
+    text-align: center;
+    background: var(--cream);
+  }
+  .free-note    { font-size: 12.5px; color: var(--muted); letter-spacing: 0.03em; }
+  .footer-links { margin-top: 6px; font-size: 11.5px; color: var(--muted); }
+  .footer-links a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+
+  /* ---------- reveal on scroll (JS only, so no-JS still shows all) ---------- */
+
+  .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .js .reveal.in { opacity: 1; transform: none; }
+  /* Anything already on screen at load (including after a #support jump from
+     inside the app) appears instantly — a deep link must never land on blank. */
+  .js .reveal.now { transition: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .logo { animation: none; }
+    .support:target { animation: none; }
+    .js .reveal { opacity: 1; transform: none; transition: none; }
+    .btn:hover, .coffee:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stripe"></div>
+
+<header class="hero">
+  <img src="logo.png" alt="Rent vs. Buy app icon" class="logo" width="168" height="168">
+  <h1 class="wordmark">Rent vs. Buy</h1>
+  <p class="subtitle">The Home Decision Calculator</p>
+  <div class="divider"></div>
+  <p class="desc">Renting and buying both have hidden costs. Rent vs. Buy accounts for the opportunity cost of your down payment, home equity, invested savings, and more — so you can see the full financial picture.</p>
+
+  <div class="buttons">
+    <a href="https://apps.apple.com/us/app/rent-vs-buy-calculator/id6768829509" class="btn btn-ios">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+      </svg>
+      <span class="btn-label">
+        <span class="btn-label-sub">Download on the</span>
+        <span class="btn-label-main">App Store</span>
+      </span>
+    </a>
+
+    <span class="btn btn-android" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M3 20.5v-17c0-.83 .94-1.3 1.6-.8l14 8.5c.6.37.6 1.23 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z"/>
+      </svg>
+      <span class="btn-label">
+        <span class="btn-label-sub">Coming soon on</span>
+        <span class="btn-label-main">Google Play</span>
+      </span>
+    </span>
+  </div>
+
+  <p class="hero-note">Free &middot; No ads &middot; No account &middot; Nothing leaves your phone</p>
+</header>
+
+<section class="shots">
+  <div class="wrap">
+    <div class="shots-head reveal">
+      <p class="eyebrow">A real answer, not a rule of thumb</p>
+      <h2>See which one actually wins</h2>
+      <p class="lede">Most calculators stop at the monthly payment. This one runs both paths all the way out — equity, appreciation, invested savings, taxes — and tells you who ends up ahead.</p>
+    </div>
+
+    <div class="shot-row">
+      <figure class="reveal">
+        <img class="shot" src="shots/calculator.png" alt="The calculator screen showing renting ahead by $54K over ten years" width="303" height="660" loading="lazy">
+        <figcaption>A straight verdict at 1, 5, 10, 20 and 30&nbsp;years</figcaption>
+      </figure>
+      <figure class="reveal">
+        <img class="shot" src="shots/analysis.png" alt="Net worth over time chart comparing renter and buyer net worth" width="303" height="660" loading="lazy">
+        <figcaption>Net worth for both paths, side by side over time</figcaption>
+      </figure>
+      <figure class="reveal">
+        <img class="shot" src="shots/breakeven.png" alt="Break-even appreciation and break-even stock return tables" width="303" height="660" loading="lazy">
+        <figcaption>The exact rates where the answer flips</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="features">
+  <div class="wrap">
+    <div class="features-head reveal">
+      <p class="eyebrow">What it models</p>
+      <h2>The whole picture</h2>
+    </div>
+
+    <div class="grid">
+      <div class="card reveal">
+        <div class="ico ico-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
+        </div>
+        <h3>Net worth, not rent vs. mortgage</h3>
+        <p>Both sides are carried forward to a single number: what you're actually worth after each time horizon.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="ico ico-orange">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        </div>
+        <h3>Opportunity cost</h3>
+        <p>The renter invests the down payment and closing costs — and any month renting is cheaper — at your expected market return.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="ico ico-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
+        </div>
+        <h3>Break-even year</h3>
+        <p>Find the point where the winning strategy switches — and the appreciation or stock return that would flip it.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="ico ico-orange">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>
+        </div>
+        <h3>Sensitivity analysis</h3>
+        <p>A grid of home appreciation against stock return, so you can see how fragile — or safe — the answer really is.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="ico ico-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21v-7h6v7"/></svg>
+        </div>
+        <h3>The costs people forget</h3>
+        <p>PMI that cancels itself at 20% equity, HOA, maintenance, closing costs, property tax, insurance and utilities on both sides.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="ico ico-orange">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h16v18l-3-2-2 2-3-2-3 2-2-2-3 2z"/><path d="M8 8h8M8 12h8"/></svg>
+        </div>
+        <h3>Mortgage interest deduction</h3>
+        <p>Compares itemizing against the standard deduction each year, and invests the difference — shrinking as your interest does.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="free">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">No catch</p>
+      <h2>Completely free</h2>
+      <p class="lede">Every feature is unlocked for everyone. There's no Pro tier, nothing is held back behind a paywall, and there are no ads anywhere in the app.</p>
+
+      <div class="pills">
+        <span class="pill"><span>&check;</span>No ads</span>
+        <span class="pill"><span>&check;</span>No paywall</span>
+        <span class="pill"><span>&check;</span>No account</span>
+        <span class="pill"><span>&check;</span>No tracking</span>
+        <span class="pill"><span>&check;</span>Data stays on device</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="support" id="support">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">Optional</p>
+      <h2>Buy me a coffee</h2>
+      <p class="lede">I build these on nights and weekends and give them away. If Rent vs. Buy helped you think through a big decision, you're welcome to throw a coffee my way.</p>
+
+      <!-- The in-app button opens this page's #support anchor, not the payment
+           provider directly, so this URL can change without an app release. -->
+      <a class="coffee" href="https://ko-fi.com/manion" rel="noopener">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M17 8h1a4 4 0 0 1 0 8h-1"/>
+          <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/>
+          <path d="M6 2v3M10 2v3M14 2v3"/>
+        </svg>
+        Buy me a coffee
+      </a>
+
+      <p class="support-fine">Completely optional. It unlocks nothing, because the app is already free in full.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="free-note">No account required &middot; Your data stays on device</p>
+  <p class="footer-links">&copy; 2026 Rent vs. Buy &nbsp;&middot;&nbsp; <a href="privacy/">Privacy Policy</a> &nbsp;&middot;&nbsp; <a href="tos/">Terms of Service</a></p>
+</footer>
+
+<script>
+  (function () {
+    var els = [].slice.call(document.querySelectorAll('.reveal'));
+
+    function onScreen(el) {
+      var r = el.getBoundingClientRect();
+      return r.top < (window.innerHeight || document.documentElement.clientHeight) && r.bottom > 0;
+    }
+
+    // Show — with no fade — everything already in view. Runs again on load and
+    // on hashchange so arriving straight at #support shows a finished section.
+    function showVisibleNow() {
+      els.forEach(function (el) {
+        if (!el.classList.contains('in') && onScreen(el)) el.classList.add('now', 'in');
+      });
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function (el) { el.classList.add('now', 'in'); });
+      return;
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+
+    showVisibleNow();
+    els.forEach(function (el) { io.observe(el); });
+
+    window.addEventListener('load', showVisibleNow);
+    window.addEventListener('hashchange', function () { jumpToHash(); });
+
+    // The in-app button opens .../#support. Don't trust the browser's native
+    // fragment scroll for it: the screenshots below settle after the jump, so
+    // the target moves and the landing can miss (or not happen at all). Redo it
+    // ourselves once on load — unless the reader has already scrolled.
+    var touched = false;
+    window.addEventListener('wheel',     function () { touched = true; }, { passive: true, once: true });
+    window.addEventListener('touchstart',function () { touched = true; }, { passive: true, once: true });
+
+    function jumpToHash() {
+      if (!location.hash) return;
+      var t;
+      try { t = document.querySelector(location.hash); } catch (e) { return; }
+      if (!t) return;
+      t.scrollIntoView({ block: 'start', behavior: 'auto' });
+      showVisibleNow();
+    }
+
+    if (location.hash) {
+      jumpToHash();
+      window.addEventListener('load', function () { if (!touched) jumpToHash(); });
+      // Belt and braces: each screenshot that finishes decoding can still nudge
+      // layout, so re-settle until the reader takes over.
+      [].forEach.call(document.images, function (img) {
+        if (img.complete) return;
+        img.addEventListener('load', function () { if (!touched) jumpToHash(); }, { once: true });
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>
