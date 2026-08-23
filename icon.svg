@@ -1,12 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
   <rect width="1024" height="1024" rx="230" fill="#F0EAE0"/>
-  <g transform="translate(512 512) scale(0.92)">
-    <polygon points="-259.80762,-150 0,0 0,300 -259.80762,150" fill="#DFB945"/>
-    <polygon points="259.80762,-150 259.80762,150 0,300 0,0" fill="#EA862A"/>
-    <polygon points="0,-300 259.80762,-150 0,0 -259.80762,-150" fill="#E5384A"/>
+  <g transform="translate(512 512)">
+    <polygon points="-259.80762,-150 0,0 0,300 -259.80762,150" fill="#DFB945" stroke-linejoin="round"></polygon>
+    <polygon points="259.80762,-150 259.80762,150 0,300 0,0" fill="#EA862A" stroke-linejoin="round"></polygon>
+    <polygon points="0,-300 259.80762,-150 0,0 -259.80762,-150" fill="#E5384A" stroke-linejoin="round"></polygon>
     <g transform="matrix(259.80762 -150 259.80762 150 -259.80762 -150)">
-      <polygon points="0.74,0.5 0.62,0.7078 0.38,0.7078 0.26,0.5 0.38,0.2922 0.62,0.2922"
-               fill="none" stroke="#6A1C22" stroke-width="0.085" stroke-linejoin="round"/>
+      <circle cx="0.5" cy="0.5" r="0.055" fill="#6A1C22"></circle>
     </g>
+    <g transform="matrix(0 300 259.80762 150 -259.80762 -150)">
+      <circle cx="0.25" cy="0.25" r="0.055" fill="#685522"></circle>
+      <circle cx="0.5" cy="0.5" r="0.055" fill="#685522"></circle>
+      <circle cx="0.75" cy="0.75" r="0.055" fill="#685522"></circle>
+    </g>
+    <g transform="matrix(0 300 -259.80762 150 259.80762 -150)">
+      <circle cx="0.28" cy="0.28" r="0.055" fill="#6D3D16"></circle>
+      <circle cx="0.72" cy="0.72" r="0.055" fill="#6D3D16"></circle>
+    </g>
+    <polygon points="0,-300 259.80762,-150 0,0 -259.80762,-150" fill="none" stroke="#E75A65" stroke-width="2" stroke-linejoin="round"></polygon>
   </g>
 </svg>
