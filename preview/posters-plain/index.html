@@ -78,6 +78,24 @@
     .phone,.ph{width:212px}
     .foot{flex-direction:column;gap:6px;text-align:center}
   }
+
+  /* paired screenshot composition */
+  .duo{display:flex;align-items:flex-end;justify-content:center;transform:translateY(18px)}
+  .duo .p{display:block;background:#0e0b08;border-radius:30px;padding:6px;flex:none}
+  .duo .p img{display:block;width:100%;border-radius:25px}
+  .duo .back{width:196px;transform:rotate(-5deg) translateY(-34px);margin-right:-54px;
+             box-shadow:0 18px 44px rgba(0,0,0,0.38);opacity:.97}
+  .duo .front{width:234px;transform:rotate(2deg);position:relative;z-index:2;
+              box-shadow:0 -6px 46px rgba(0,0,0,0.45)}
+  @media(max-width:900px){
+    .duo{transform:translateY(14px)}
+    .duo .back{width:168px;margin-right:-46px;transform:rotate(-5deg) translateY(-28px)}
+    .duo .front{width:200px}
+  }
+  @media(max-width:520px){
+    .duo .back{width:138px;margin-right:-38px;transform:rotate(-5deg) translateY(-22px)}
+    .duo .front{width:166px}
+  }
 </style>
 </head>
 <body>
@@ -104,7 +122,12 @@
         <div class="chips"><span class="chip">Opportunity cost</span><span class="chip">Break-even year</span><span class="chip">Free, no ads</span></div>
         <span class="cta">See the app →</span>
       </div>
-      <div class="shot"><div class="phone"><span class="screen"><img src="/rentvsbuy/shots/breakeven.png" alt=""></span></div></div>
+      <div class="shot">
+        <div class="duo">
+          <span class="p back"><img src="/rentvsbuy/shots/hero-back.png" alt="Rent vs Buy analysis screen"></span>
+          <span class="p front"><img src="/rentvsbuy/shots/hero-front.png" alt="Rent vs Buy result screen"></span>
+        </div>
+      </div>
     </a>
 
     <a class="poster dd" href="/doomsday/">
