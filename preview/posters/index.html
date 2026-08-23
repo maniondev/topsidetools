@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topside Tools — Prototype D (Poster Cards)</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="/icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --cream:#F0EAE0; --red:#E5384A; --orange:#EA862A; --gold:#DFB945;
+    --text:#1E1410; --muted:#7A6050; --ink:#4A3020; --line:rgba(90,68,32,0.15);
+  }
+  html{background-color:var(--cream);
+    background-image:linear-gradient(rgba(240,234,224,0.68),rgba(240,234,224,0.68)),url('/bg.svg');
+    background-size:auto,240%;background-position:0 0,top left;background-repeat:no-repeat,repeat-y}
+  body{color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit}
+  .stripe{height:5px;background:linear-gradient(90deg,var(--red) 0%,var(--orange) 50%,var(--gold) 100%)}
+  .shell{width:100%;max-width:1180px;margin:0 auto;padding:0 34px}
+
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand img{width:36px;height:36px;display:block}
+  .brand span{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:600;color:var(--ink);line-height:1}
+  .brand em{font-style:normal;color:var(--muted)}
+  .nav-links{font-size:14px;color:var(--muted)}
+
+  .hero{padding:70px 0 54px}
+  .hero .kick{font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:16px}
+  .hero h1{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:clamp(44px,6.4vw,80px);line-height:1.0;letter-spacing:-0.024em;color:var(--ink);margin-bottom:20px;max-width:17ch}
+  .hero p{font-size:18.5px;color:var(--muted);line-height:1.7;max-width:48ch}
+
+  /* poster cards */
+  .stack{display:flex;flex-direction:column;gap:26px;padding-bottom:70px}
+  .poster{
+    position:relative;display:grid;grid-template-columns:1.05fr 0.95fr;gap:40px;align-items:end;
+    border-radius:28px;overflow:hidden;padding:44px 44px 0;min-height:400px;
+    box-shadow:0 16px 46px rgba(90,40,10,0.11);
+  }
+  .poster.rvb{background:linear-gradient(150deg,#0D5068 0%,#093A4C 62%,#0b3140 100%)}
+  .poster.dd{background:linear-gradient(150deg,#0C4A5C 0%,#082E3A 60%,#0a2630 100%)}
+  .poster.scg{background:linear-gradient(150deg,#C4303F 0%,#8E2028 65%,#75171f 100%)}
+  .poster .copy{padding-bottom:46px;color:#F4EDE2}
+  .poster .eyebrow{font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;opacity:.72;margin-bottom:13px}
+  .poster h2{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,3.6vw,44px);font-weight:600;line-height:1.06;margin-bottom:12px;color:#fff}
+  .poster p{font-size:16px;line-height:1.72;opacity:.86;max-width:42ch;margin-bottom:24px}
+  .poster .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+  .chip{font-size:12px;padding:6px 12px;border-radius:20px;background:rgba(255,255,255,0.14);color:#fff}
+  .cta{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#16110d;font-size:14.5px;font-weight:500;padding:12px 20px;border-radius:12px}
+  .cta:hover{background:#F0EAE0}
+  .cta.soft{background:rgba(255,255,255,0.16);color:#fff}
+
+  .shot{display:flex;justify-content:center;align-items:flex-end;height:100%}
+  .phone{width:250px;background:#100c09;border-radius:34px;padding:9px;box-shadow:0 -8px 40px rgba(0,0,0,0.35);transform:translateY(14px)}
+  .phone .screen{border-radius:26px;overflow:hidden;display:block}
+  .phone .screen img{width:100%;display:block}
+  .webshot{width:100%;max-width:470px;border-radius:12px 12px 0 0;overflow:hidden;transform:translateY(16px);box-shadow:0 -8px 40px rgba(0,0,0,0.32)}
+  .webshot img{width:100%;display:block}
+  .ph{width:250px;height:330px;border-radius:34px 34px 0 0;border:2px dashed rgba(255,255,255,0.34);border-bottom:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transform:translateY(14px)}
+  .ph img{width:76px;height:76px;border-radius:17px}
+  .ph span{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.7);text-align:center;line-height:1.7;padding:0 26px}
+
+  footer{padding:26px 0 40px;border-top:1px solid var(--line)}
+  .foot{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+
+  @media(max-width:900px){
+    .poster{grid-template-columns:1fr;padding:36px 30px 0;gap:26px;min-height:0}
+    .poster .copy{padding-bottom:8px}
+    .shell{padding:0 20px}
+    .hero{padding:48px 0 36px}
+  }
+  @media(max-width:520px){
+    .phone,.ph{width:212px}
+    .foot{flex-direction:column;gap:6px;text-align:center}
+  }
+</style>
+</head>
+<body>
+
+<div class="stripe"></div>
+<div class="shell">
+  <div class="nav">
+    <a class="brand" href="/"><img src="/logo.svg" alt=""><span>Topside <em>Tools</em></span></a>
+    <div class="nav-links"><a href="/contact">Contact</a></div>
+  </div>
+
+  <header class="hero">
+    <p class="kick">Independent software</p>
+    <h1>Three tools. Three questions.</h1>
+    <p>Each one built to settle a single decision properly, then get out of your way. No accounts, no ads, nothing leaving your device.</p>
+  </header>
+
+  <div class="stack">
+
+    <a class="poster rvb" href="/rentvsbuy/">
+      <div class="copy">
+        <p class="eyebrow">On the App Store</p>
+        <h2>Rent vs Buy</h2>
+        <p>Renting and buying both hide their real costs. This compares them on total net worth — not the monthly payment — so you see which actually leaves you better off, and in what year.</p>
+        <div class="chips"><span class="chip">Opportunity cost</span><span class="chip">Break-even year</span><span class="chip">Free, no ads</span></div>
+        <span class="cta">See the app →</span>
+      </div>
+      <div class="shot"><div class="phone"><span class="screen"><img src="/rentvsbuy/shots/breakeven.png" alt=""></span></div></div>
+    </a>
+
+    <a class="poster dd" href="/doomsday/">
+      <div class="copy">
+        <p class="eyebrow">Coming soon</p>
+        <h2>Doomsday</h2>
+        <p>Name the day of the week for any date in history, in your head, in seconds. Learn the algorithm one step at a time, then drill it until the arithmetic disappears.</p>
+        <div class="chips"><span class="chip">Guided lessons</span><span class="chip">Timed drills</span><span class="chip">Any date</span></div>
+        <span class="cta soft">Read more →</span>
+      </div>
+      <div class="shot"><div class="ph"><img src="/doomsday/logo.png" alt=""><span>Screenshots needed<br>— none exist yet —</span></div></div>
+    </a>
+
+    <a class="poster scg" href="/streamchat/">
+      <div class="copy">
+        <p class="eyebrow">Private beta</p>
+        <h2>Stream Chat Generator</h2>
+        <p>Fake chat gives itself away through rhythm. This generates chat that reacts to what actually happens in your video, arriving on a curve that drifts and surges the way real chat does.</p>
+        <div class="chips"><span class="chip">Reacts to your footage</span><span class="chip">Transparent overlay</span><span class="chip">4 platform styles</span></div>
+        <span class="cta">Request access →</span>
+      </div>
+      <div class="shot"><div class="webshot"><img src="/streamchat/hero.png" alt=""></div></div>
+    </a>
+
+  </div>
+</div>
+
+<footer>
+  <div class="shell foot">
+    <span>© 2026 John Manion</span>
+    <span><a href="/contact">Contact</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
