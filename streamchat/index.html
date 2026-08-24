@@ -3,171 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stream Chat Generator · fake livestream chat overlays</title>
-<meta name="description" content="Generate realistic livestream chat as a transparent video overlay, or burned straight into your video. TikTok, Instagram, Facebook and Twitch styles.">
-<meta property="og:title" content="Stream Chat Generator">
-<meta property="og:description" content="Realistic livestream chat overlays for your videos.">
-<meta property="og:image" content="https://topsidetools.com/streamchat/hero.png">
-<meta name="twitter:card" content="summary_large_image">
+<title>Moved — Stream Chat Generator</title>
+<link rel="canonical" href="https://streamchatgenerator.com/">
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url=https://streamchatgenerator.com/">
+<script>location.replace("https://streamchatgenerator.com/");</script>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #fafaf8; color: #1a1a1a; -webkit-font-smoothing: antialiased; }
-  a { text-decoration: none; color: inherit; }
-
-  .shell { max-width: 660px; margin: 0 auto; padding: 0 2rem; }
-
-  .nav { padding: 1.6rem 0; display: flex; align-items: center; justify-content: space-between; }
-  .back { font-size: 13px; color: #888; }
-  .back:hover { color: #1a1a1a; }
-  .wordmark { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #888; }
-
-  .hero { padding: 3rem 0 2.5rem; text-align: center; }
-  .hero h1 { font-size: 38px; font-weight: 500; line-height: 1.2; margin-bottom: 1rem; color: #111; letter-spacing: -0.015em; }
-  .hero .sub { font-size: 17px; color: #666; line-height: 1.7; max-width: 460px; margin: 0 auto 1.75rem; }
-
-  .cta { display: inline-flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-  .btn { display: inline-block; padding: 0.7rem 1.3rem; border-radius: 10px; font-size: 14px; font-weight: 500; border: 1px solid transparent; }
-  .btn-primary { background: #1a1a1a; color: #fafaf8; }
-  .btn-primary:hover { background: #333; }
-  .btn-ghost { border-color: #e0dfda; color: #444; background: #fff; }
-  .btn-ghost:hover { border-color: #bbb; }
-  .note { font-size: 12.5px; color: #aaa; margin-top: 0.9rem; }
-
-  .shot { margin: 2.5rem 0 0; border: 1px solid #e8e7e3; border-radius: 16px; overflow: hidden; line-height: 0; }
-  .shot img { width: 100%; height: auto; display: block; }
-  .caption { font-size: 12.5px; color: #aaa; text-align: center; margin-top: 0.75rem; line-height: 1.6; }
-
-  section { padding: 3.25rem 0; border-top: 1px solid #e8e7e3; }
-  .label { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #aaa; margin-bottom: 1.25rem; }
-  h2 { font-size: 21px; font-weight: 500; color: #111; margin-bottom: 0.75rem; letter-spacing: -0.01em; }
-  p { font-size: 15px; color: #666; line-height: 1.75; }
-  p + p { margin-top: 0.9rem; }
-
-  .rows { display: grid; gap: 10px; }
-  .row { padding: 1.1rem 1.25rem; background: #fff; border: 1px solid #e8e7e3; border-radius: 14px; }
-  .row h3 { font-size: 15px; font-weight: 500; color: #111; margin-bottom: 4px; }
-  .row p { font-size: 13.5px; color: #888; line-height: 1.65; }
-
-  .tiers { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .tier { padding: 1.4rem 1.35rem; background: #fff; border: 1px solid #e8e7e3; border-radius: 14px; }
-  .tier.pro { border-color: #d4d3cd; }
-  .tier .name { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #aaa; margin-bottom: 0.6rem; }
-  .tier .price { font-size: 25px; font-weight: 500; color: #111; margin-bottom: 1rem; letter-spacing: -0.02em; }
-  .tier ul { list-style: none; }
-  .tier li { font-size: 13.5px; color: #666; line-height: 1.5; padding-left: 1.1rem; position: relative; margin-bottom: 0.5rem; }
-  .tier li::before { content: "·"; position: absolute; left: 0; color: #ccc; }
-
-  .footer { padding: 2.5rem 0 3rem; border-top: 1px solid #e8e7e3; text-align: center; }
-  .footer p { font-size: 13px; color: #aaa; }
-
-  @media (max-width: 560px) { .tiers { grid-template-columns: 1fr; } .hero h1 { font-size: 31px; } }
-
-  @media (prefers-color-scheme: dark) {
-    body { background: #141413; color: #f0efe9; }
-    .hero h1, h2, .row h3, .tier .price { color: #f0efe9; }
-    .hero .sub, p, .tier li { color: #888; }
-    .wordmark, .label, .caption, .note, .footer p, .back { color: #555; }
-    .back:hover { color: #f0efe9; }
-    section, .footer, .shot { border-color: #2a2a28; }
-    .row, .tier { background: #1e1e1c; border-color: #2a2a28; }
-    .tier.pro { border-color: #3a3a37; }
-    .row p { color: #666; }
-    .btn-primary { background: #f0efe9; color: #141413; }
-    .btn-primary:hover { background: #fff; }
-    .btn-ghost { background: #1e1e1c; border-color: #2a2a28; color: #ccc; }
-    .btn-ghost:hover { border-color: #555; }
-    .tier li::before { color: #444; }
-  }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+         background: #1C0B00; color: #EFE4D8; display: grid; place-items: center;
+         min-height: 100dvh; margin: 0; padding: 24px; text-align: center; }
+  p { font-size: 15px; line-height: 1.6; color: #A5907E; }
+  a { color: #E5384A; }
 </style>
 </head>
 <body>
-
-<div class="shell">
-
-  <nav class="nav">
-    <a class="back" href="/">← Topside Tools</a>
-    <span class="wordmark">Stream Chat Generator</span>
-  </nav>
-
-  <div class="hero">
-    <h1>Livestream chat,<br>for videos that never streamed.</h1>
-    <p class="sub">Generate a chat overlay that reacts to what actually happens in your video, then drop it on top or burn it straight in.</p>
-    <div class="cta">
-      <a class="btn btn-primary" href="#early">Request access</a>
-      <a class="btn btn-ghost" href="#how">How it works</a>
-    </div>
-    <p class="note">In private testing.</p>
-  </div>
-
-  <div class="shot">
-    <img src="hero.png" alt="Chat messages and floating hearts overlaid on a video frame" width="1080" height="670">
-  </div>
-  <p class="caption">Real output. Every message, username, colour and heart drawn by the renderer.</p>
-
-  <section id="how">
-    <p class="label">How it works</p>
-    <div class="rows">
-      <div class="row">
-        <h3>Tell it what happens</h3>
-        <p>Mark the moments that matter, like “0:08, I clear the whole board”, and say how chat should react. Or upload the video and let it find the moments itself.</p>
-      </div>
-      <div class="row">
-        <h3>It writes the chat</h3>
-        <p>Messages that reference your actual video, not generic filler. People reply to each other, with a realistic pause before they do.</p>
-      </div>
-      <div class="row">
-        <h3>Take the overlay or the finished video</h3>
-        <p>A transparent file to composite yourself, or an MP4 with chat already burned in and your audio intact.</p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <p class="label">Why it looks real</p>
-    <h2>The timing is the hard part.</h2>
-    <p>Anyone can put text on a video. What gives fake chat away is rhythm: messages arriving at a metronome tick, replies landing faster than a human could type, the same line repeated until it reads as a bug.</p>
-    <p>Chat here arrives on a curve that drifts and surges the way real chat does. Your viewer count sets the pace, how many people talk, how long their messages are, and how much they repeat each other. Replies wait a few seconds, because people read before they type.</p>
-  </section>
-
-  <section>
-    <p class="label">Pricing</p>
-    <div class="tiers">
-      <div class="tier">
-        <div class="name">Free</div>
-        <div class="price">$0</div>
-        <ul>
-          <li>Videos up to 60 seconds</li>
-          <li>Up to 5,000 viewers</li>
-          <li>All four platform styles</li>
-          <li>Pre-written chat</li>
-        </ul>
-      </div>
-      <div class="tier pro">
-        <div class="name">Pro</div>
-        <div class="price">$4.99<span style="font-size:14px;color:#aaa;font-weight:400">/mo</span></div>
-        <ul>
-          <li>Chat written for your video</li>
-          <li>Upload and auto-detect moments</li>
-          <li>60 minutes of video a month</li>
-          <li>Any length, any audience size</li>
-        </ul>
-      </div>
-    </div>
-    <p class="caption" style="text-align:left;margin-top:1rem">Pro is metered in minutes of video, not generations, so a 30-second clip costs a lot less than a ten-minute one, and you are charged accordingly.</p>
-  </section>
-
-  <section id="early">
-    <p class="label">Access</p>
-    <h2>Not open yet.</h2>
-    <p>Stream Chat Generator is being tested with a small group first. If you make short-form video and want in, get in touch and I will send you a key.</p>
-    <p style="margin-top:1.25rem"><a class="btn btn-primary" href="mailto:johntmanion@gmail.com?subject=Stream%20Chat%20Generator%20access">Email for access</a></p>
-  </section>
-
-  <div class="footer">
-    <p>A <a href="/" style="text-decoration:underline">Manion</a> project.</p>
-  </div>
-
-</div>
-
+  <p>Stream Chat Generator lives at<br><a href="https://streamchatgenerator.com/">streamchatgenerator.com</a></p>
 </body>
 </html>
