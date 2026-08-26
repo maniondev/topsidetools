@@ -38,21 +38,6 @@ h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; 
 
 a { color: var(--teal); }
 
-/* ── Masthead ───────────────────────────────────────────────────────────── */
-
-.masthead {
-  background: var(--teal-d);
-  color: #F4EFE6;
-  padding: 14px 0;
-}
-.masthead .shell { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.masthead a { color: #F4EFE6; text-decoration: none; }
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 500; }
-.brand img { width: 30px; height: 30px; border-radius: 7px; display: block; }
-.brand strong { font-family: 'Playfair Display', Georgia, serif; font-size: 19px; font-weight: 700; }
-.masthead nav { display: flex; gap: 18px; font-size: 14px; }
-.masthead nav a:hover { text-decoration: underline; }
-
 .shell { width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 24px; }
 
 /* ── Page intro ─────────────────────────────────────────────────────────── */
