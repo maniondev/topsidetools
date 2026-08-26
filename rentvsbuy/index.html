@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rent vs Buy · Home Calculator</title>
+<title>Rent vs Buy · Opportunity Cost Calculator</title>
 <meta name="description" content="A free iPhone calculator that compares renting and buying on total net worth: opportunity cost, home equity, break-even year and all. No ads, no paywall.">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Rent vs Buy · Home Calculator">
+<meta property="og:title" content="Rent vs Buy · Opportunity Cost Calculator">
 <meta property="og:description" content="Compare renting and buying on total net worth, not just monthly payments. Free, no ads, no paywall.">
 <meta property="og:url" content="https://topsidetools.com/rentvsbuy/">
 <meta property="og:image" content="https://topsidetools.com/rentvsbuy/logo.png">
@@ -304,7 +304,7 @@
   }
 
   .support h2 { color: var(--cream); }
-  .support .eyebrow { color: #F2A07A; }
+  .support .eyebrow { color: #F2A07A; margin-bottom: 20px; }
   .support .lede { color: rgba(240,234,224,0.78); margin: 16px auto 0; }
 
   .coffee {
@@ -436,6 +436,13 @@
     .car-hint{display:none}
   }
   @media (prefers-reduced-motion: reduce){ .track{scroll-behavior:auto} }
+
+  /* ---------- closing call to action ---------- */
+  .closing{padding:calc(var(--pad) * .8) 0;text-align:center;border-top:1px solid rgba(10,45,58,.10)}
+  .closing-h{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(26px,3.4vw,36px);
+    color:var(--text);margin:0 0 22px}
+  .closing-buttons{flex-direction:row;justify-content:center;flex-wrap:wrap;width:auto;max-width:none;margin:0 auto}
+  .closing-fine{margin-top:18px;font-size:13.5px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -454,7 +461,7 @@
   <div class="wrap hero-grid">
     <div class="hero-copy">
       <h1 class="wordmark">Rent vs Buy</h1>
-      <p class="subtitle">Home Calculator</p>
+      <p class="subtitle">Opportunity Cost Calculator</p>
       <div class="buttons">
         <a href="https://apps.apple.com/us/app/rent-vs-buy-calculator/id6768829509" class="btn btn-ios">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -596,8 +603,6 @@
   <div class="wrap">
     <div class="reveal">
       <p class="eyebrow">Optional</p>
-      <h2>Buy me a coffee</h2>
-      <p class="lede">I build these on nights and weekends and give them away. If Rent vs Buy helped you think through a big decision, you're welcome to throw a coffee my way.</p>
 
       <!-- The in-app button opens this page's #support anchor, not the payment
            provider directly, so this URL can change without an app release. -->
@@ -610,7 +615,36 @@
         Buy me a coffee
       </a>
 
-      <p class="support-fine">Completely optional. It unlocks nothing, because the app is already free in full.</p>
+      <p class="support-fine">The app is free in full, with no ads. This is entirely optional and unlocks nothing.</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="closing">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="closing-h">Run your own numbers.</p>
+      <div class="buttons closing-buttons">
+        <a href="https://apps.apple.com/us/app/rent-vs-buy-calculator/id6768829509" class="btn btn-ios">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+      </svg>
+      <span class="btn-label">
+        <span class="btn-label-sub">Download on the</span>
+        <span class="btn-label-main">App Store</span>
+      </span>
+    </a>
+        <span class="btn btn-android" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M3 20.5v-17c0-.83 .94-1.3 1.6-.8l14 8.5c.6.37.6 1.23 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z"/>
+      </svg>
+      <span class="btn-label">
+        <span class="btn-label-sub">Coming soon on</span>
+        <span class="btn-label-main">Google Play</span>
+      </span>
+      </div>
+      <p class="closing-fine">Free &middot; No ads &middot; No account &middot; Nothing leaves your phone</p>
     </div>
   </div>
 </section>
