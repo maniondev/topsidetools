@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rent vs Buy · Opportunity Cost Calculator</title>
-<meta name="description" content="A free iPhone calculator that compares renting and buying on total net worth: opportunity cost, home equity, break-even year and all. No ads, no paywall.">
+<meta name="description" content="A free calculator that compares renting and buying on total net worth: opportunity cost, home equity, break-even year and all. Use it in your browser or on iPhone. No ads, no paywall.">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Rent vs Buy · Opportunity Cost Calculator">
@@ -168,14 +168,12 @@
   }
   .btn-ios:hover { box-shadow: 0 8px 24px rgba(13,80,104,0.38); }
 
-  .btn-android {
+  .btn-web {
     background: var(--orange);
     color: #fff;
     box-shadow: 0 4px 16px rgba(212,80,26,0.28);
-    opacity: 0.45;
-    cursor: default;
-    pointer-events: none;
   }
+  .btn-web:hover { box-shadow: 0 8px 24px rgba(212,80,26,0.38); }
 
   .btn-label      { display: flex; flex-direction: column; text-align: left; }
   .btn-label-sub  { font-size: 10px; font-weight: 400; opacity: 0.7; letter-spacing: 0.05em; line-height: 1; }
@@ -497,14 +495,15 @@
         <span class="btn-label-main">App Store</span>
       </span>
     </a>
-        <span class="btn btn-android" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M3 20.5v-17c0-.83 .94-1.3 1.6-.8l14 8.5c.6.37.6 1.23 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z"/>
+        <a href="calculator/" class="btn btn-web">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.7 2.5 15.3 0 18c-2.5-2.7-2.5-15.3 0-18z"/>
           </svg>
           <span class="btn-label">
-            <span class="btn-label-sub">Coming soon on</span>
-            <span class="btn-label-main">Google Play</span>
+            <span class="btn-label-sub">Use it in your</span>
+            <span class="btn-label-main">Browser</span>
           </span>
+        </a>
         </span>
       </div>
     </div>
@@ -660,14 +659,15 @@
         <span class="btn-label-main">App Store</span>
       </span>
     </a>
-        <span class="btn btn-android" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M3 20.5v-17c0-.83 .94-1.3 1.6-.8l14 8.5c.6.37.6 1.23 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z"/>
+        <a href="calculator/" class="btn btn-web">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.7 2.5 15.3 0 18c-2.5-2.7-2.5-15.3 0-18z"/>
           </svg>
           <span class="btn-label">
-            <span class="btn-label-sub">Coming soon on</span>
-            <span class="btn-label-main">Google Play</span>
+            <span class="btn-label-sub">Use it in your</span>
+            <span class="btn-label-main">Browser</span>
           </span>
+        </a>
         </span>
       </div>
       <p class="closing-fine">Free &middot; No ads &middot; No account</p>
