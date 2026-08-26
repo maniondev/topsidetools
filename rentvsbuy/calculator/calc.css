@@ -122,9 +122,14 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-app
 
 /* ── Horizon selector ───────────────────────────────────────────────────── */
 
-.horizons { display: flex; gap: 8px; flex-wrap: wrap; }
+/* All five horizons share one row. flex-basis 0 makes them equal width and
+   sized by the container rather than by their labels, so the longest one
+   cannot wrap onto a line of its own. */
+.horizons { display: flex; gap: 8px; }
 .horizons button {
-  flex: 1 1 auto;
+  flex: 1 1 0;
+  min-width: 0;
+  white-space: nowrap;
   font: inherit; font-size: 14px; font-weight: 500;
   padding: 9px 6px;
   border: 1px solid var(--line);
@@ -236,6 +241,9 @@ tr.is-current { background: var(--teal-bg); }
    Applied only where it earns its keep: three-column tables still fit. */
 
 @media (max-width: 620px) {
+  .horizons { gap: 6px; }
+  .horizons button { font-size: 13px; padding: 9px 2px; }
+
   table.stack, table.stack tbody { display: block; }
   table.stack thead { display: none; }
 

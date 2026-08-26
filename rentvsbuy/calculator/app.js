@@ -166,7 +166,38 @@ function renderInputs() {
 
 // ── Results ─────────────────────────────────────────────────────────────────
 
+/**
+ * Sections a reader has opened, by title.
+ *
+ * render() replaces the whole results tree, which resets every <details> to
+ * the `open` attribute in its markup. Without this, changing the sensitivity
+ * horizon collapsed the very section holding the button that was just pressed.
+ */
+const openSections = new Set();
+
+function captureOpenSections() {
+  const found = new Set();
+  document.querySelectorAll('#results .sec').forEach((el) => {
+    const key = el.querySelector('.sec-title')?.firstChild?.textContent?.trim();
+    if (key && el.open) found.add(key);
+  });
+  // Only trust a capture from a tree that actually rendered, otherwise the
+  // first call would wipe the defaults before anything exists.
+  if (document.querySelector('#results .sec')) {
+    openSections.clear();
+    found.forEach((k) => openSections.add(k));
+  }
+}
+
+function restoreOpenSections() {
+  document.querySelectorAll('#results .sec').forEach((el) => {
+    const key = el.querySelector('.sec-title')?.firstChild?.textContent?.trim();
+    if (key) el.open = openSections.has(key);
+  });
+}
+
 function render() {
+  captureOpenSections();
   const r = calculate(inputs);
   const p = r.periods.find((x) => x.years === horizon) || r.periods[0];
   const rentWins = p.difference > 0;
@@ -190,6 +221,8 @@ function render() {
     secTaxBreakdown(r),
     `<p class="disclaimer">Estimates only, based entirely on the assumptions above. Selling costs are not deducted from the buyer's net worth, so buying is shown at its most favourable. Not financial advice.</p>`,
   ].join('');
+
+  if (openSections.size) restoreOpenSections();
 }
 
 function verdict(p, rentWins) {
@@ -204,7 +237,7 @@ function verdict(p, rentWins) {
 
 function horizonPicker() {
   return `<div class="horizons" role="group" aria-label="Time horizon">${
-    HORIZONS.map((y) => `<button type="button" data-horizon="${y}" aria-pressed="${y === horizon}">${y === 1 ? '1 year' : `${y} years`}</button>`).join('')
+    HORIZONS.map((y) => `<button type="button" data-horizon="${y}" aria-pressed="${y === horizon}">${y === 1 ? '1 yr' : `${y} yrs`}</button>`).join('')
   }</div>`;
 }
 
@@ -220,10 +253,17 @@ function nwCards(p, rentWins) {
   </div>`;
 }
 
+/**
+ * Charts scale to their container width, so a 640-wide viewBox collapses to
+ * 135px tall on a phone. The box itself narrows instead, which keeps the
+ * drawing legible without stretching strokes.
+ */
+const narrowChart = () => window.matchMedia('(max-width: 620px)').matches;
+
 // 1 ─ Net worth over time
 function secNetWorthOverTime(r) {
   const max = Math.max(...r.periods.flatMap((p) => [p.renterNetWorth, p.buyerNetWorth]), 1);
-  const W = 640, H = 220, pad = 26, gw = (W - pad) / r.periods.length;
+  const W = narrowChart() ? 380 : 640, H = 220, pad = 26, gw = (W - pad) / r.periods.length;
   const bars = r.periods.map((p, i) => {
     const x = pad + i * gw, bw = (gw - 18) / 2;
     const hr = Math.max(1, (p.renterNetWorth / max) * (H - 46));
@@ -300,11 +340,11 @@ function secCashFlow(r) {
   const col = (title, cls, rows, total) => `<div>
     <h3 style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">${title}</h3>
     ${rows.map(([k, v]) => kv(k, money(v))).join('')}
-    ${kv('Total each month', `<span class="${cls}">${money(total)}</span>`)}
+    ${kv('Total, first month', `<span class="${cls}">${money(total)}</span>`)}
   </div>`;
 
   const diff = r.monthlyRenterSavings;
-  return section('Monthly cash flow detail', 'What leaves your account each month, today',
+  return section('Monthly cash flow detail', 'What each side pays in the first month',
     `<div class="grid2">
       ${col('Renting', 'rent', rentSide, r.monthlyRenterCost)}
       ${col('Buying', 'buy', buySide, r.totalMonthlyOwnerCost)}
@@ -329,20 +369,46 @@ function secMonthlyCostOverTime(r) {
   const s = monthlyCostSeries(inputs, r);
   const all = [...s.renter.map((d) => d.cost), ...s.owner.map((d) => d.cost)];
   const max = Math.max(...all), min = Math.min(...all) * 0.88, range = (max - min) || 1;
-  const W = 640, H = 210, pad = 30;
-  const X = (y) => pad + (y / 30) * (W - pad - 8);
-  const Y = (v) => 12 + (H - 46) * (1 - (v - min) / range);
+
+  // Taller than wide-screen convention because the interesting part is the
+  // vertical distance between the two lines, not the passage of time.
+  const narrow = narrowChart();
+  const W = narrow ? 360 : 640, H = 300;
+  const padL = narrow ? 46 : 62, padR = 10, padT = 14, padB = 30;
+  const X = (y) => padL + (y / 30) * (W - padL - padR);
+  const Y = (v) => padT + (H - padT - padB) * (1 - (v - min) / range);
+
+  const TICKS = 5;
+  const axis = Array.from({ length: TICKS }, (_, i) => {
+    const v = min + (range * i) / (TICKS - 1);
+    const y = Y(v);
+    return `<line x1="${padL}" y1="${y.toFixed(1)}" x2="${W - padR}" y2="${y.toFixed(1)}"
+              stroke="var(--line-soft)" stroke-width="1"/>
+            <text x="${padL - 8}" y="${(y + 4).toFixed(1)}" text-anchor="end" font-size="11"
+              fill="var(--muted)">${formatCurrency(v, true)}</text>`;
+  }).join('');
+
   const line = (pts, color) =>
-    `<polyline fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" points="${pts.map((d) => `${X(d.year).toFixed(1)},${Y(d.cost).toFixed(1)}`).join(' ')}"/>`;
-  const ticks = [0, 10, 20, 30].map((y) => `<text x="${X(y)}" y="${H - 8}" text-anchor="middle" font-size="11" fill="var(--muted)">${y}y</text>`).join('');
+    `<polyline fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"
+       points="${pts.map((d) => `${X(d.year).toFixed(1)},${Y(d.cost).toFixed(1)}`).join(' ')}"/>`;
+
+  const xTicks = [0, 5, 10, 15, 20, 25, 30]
+    .map((y) => `<text x="${X(y)}" y="${H - 9}" text-anchor="middle" font-size="11" fill="var(--muted)">${y}</text>`)
+    .join('');
+
   const cross = s.crossoverYear != null
-    ? `<line x1="${X(s.crossoverYear)}" y1="8" x2="${X(s.crossoverYear)}" y2="${H - 34}" stroke="var(--text)" stroke-width="1" stroke-dasharray="3 3" opacity=".5"/>`
+    ? `<line x1="${X(s.crossoverYear)}" y1="${padT}" x2="${X(s.crossoverYear)}" y2="${H - padB}"
+         stroke="var(--text)" stroke-width="1" stroke-dasharray="3 3" opacity=".45"/>`
     : '';
+
   return section('Monthly cost over time', 'Not net worth: just what each side pays per month',
-    `<div class="scroller"><svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Monthly cost of renting versus owning over thirty years">
-      <line x1="${pad}" y1="${H - 34}" x2="${W - 8}" y2="${H - 34}" stroke="var(--line)"/>
-      ${cross}${line(s.owner, 'var(--orange)')}${line(s.renter, 'var(--teal)')}${ticks}
-    </svg></div>
+    `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img"
+       aria-label="Monthly cost of renting versus owning over thirty years, in dollars per month">
+      ${axis}
+      <line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="var(--line)"/>
+      ${cross}${line(s.owner, 'var(--orange)')}${line(s.renter, 'var(--teal)')}${xTicks}
+      <text x="${(padL + W - padR) / 2}" y="${H - 0.5}" text-anchor="middle" font-size="10.5" fill="var(--muted)">years</text>
+    </svg>
     <div class="legend"><span><i style="background:var(--teal)"></i>Renting</span><span><i style="background:var(--orange)"></i>Owning</span></div>
     <p class="note">Rent compounds every year. Owning is flat and then steps down, once when PMI falls away and again when the mortgage is paid off.${
       s.crossoverYear != null ? ` The two cross at about year ${s.crossoverYear.toFixed(1)}, marked on the chart.` : ' On these assumptions the two never cross within thirty years.'}</p>`);
@@ -357,7 +423,7 @@ function secSensitivity() {
     row.cols.map((c) => `<td class="cell ${c.rentWins ? 'r' : 'b'}${row.isCurrentApp && c.isCurrentEq ? ' here' : ''}">${c.rentWins ? 'Rent' : 'Buy'}</td>`).join('')
   }</tr>`).join('');
   const picker = `<div class="horizons" style="margin-bottom:12px">${
-    HORIZONS.map((y) => `<button type="button" data-sens="${y}" aria-pressed="${y === sensHorizon}">${y === 1 ? '1 year' : `${y} years`}</button>`).join('')}</div>`;
+    HORIZONS.map((y) => `<button type="button" data-sens="${y}" aria-pressed="${y === sensHorizon}">${y === 1 ? '1 yr' : `${y} yrs`}</button>`).join('')}</div>`;
   return section('Sensitivity analysis', 'Home appreciation against stock return, and who wins',
     picker + table(head, rows, 'sens') +
     `<div class="legend"><span><i style="background:var(--teal)"></i>Renting wins</span><span><i style="background:var(--orange)"></i>Buying wins</span><span>Outlined cell is your own assumption</span></div>
@@ -387,8 +453,8 @@ function secBreakEvenReturn(r) {
 // 10 ─ Buyer net worth breakdown
 function secBuyerBreakdown(r) {
   const cols = [
-    { label: 'Horizon' }, { label: 'Home value' }, { label: 'Mortgage left' }, { label: 'Equity' },
-    { label: 'Invested tax saving' }, { label: 'Invested monthly saving' }, { label: 'Total', cls: 'buy' },
+    { label: 'Horizon' }, { label: 'Home value' }, { label: 'Remaining mortgage' }, { label: 'Equity' },
+    { label: 'Tax saving' }, { label: 'Monthly saving' }, { label: 'Total', cls: 'buy' },
   ];
   const rows = r.periods.map((p) => ({
     cls: p.years === horizon ? 'is-current' : '',
@@ -399,7 +465,7 @@ function secBuyerBreakdown(r) {
   }));
   return section('Buyer net worth breakdown', 'Where the owner\u2019s money ends up',
     dataTable(cols, rows) +
-    `<p class="note">Equity is the down payment plus principal repaid plus appreciation. Invested monthly saving covers months where owning was cheaper than renting, invested at ${formatPercent(inputs.equityReturn)}.</p>`);
+    `<p class="note">Equity is the down payment plus principal repaid plus appreciation. Monthly saving covers months where owning was cheaper than renting. Both saving columns are invested at ${formatPercent(inputs.equityReturn)}.</p>`);
 }
 
 // 11 ─ Renter portfolio breakdown
@@ -464,13 +530,25 @@ document.getElementById('results').addEventListener('click', (e) => {
   const h = e.target.closest('[data-horizon]');
   if (h) { horizon = Number(h.dataset.horizon); render(); return; }
   const s = e.target.closest('[data-sens]');
-  if (s) {
-    sensHorizon = Number(s.dataset.sens);
-    render();
-    // Keep the grid where the reader was looking instead of jumping to the top.
-    document.querySelector('[data-sens]')?.closest('.sec')?.scrollIntoView({ block: 'nearest' });
-  }
+  if (s) { sensHorizon = Number(s.dataset.sens); render(); }
 });
+
+// Crossing the chart breakpoint changes the viewBox, so redraw on the way past.
+// Both a media-query listener and a plain resize listener, because the former
+// is the right tool and the latter is the one that definitely fires; the guard
+// on wasNarrow means whichever arrives first does the work exactly once.
+let wasNarrow = narrowChart();
+function onViewportChange() {
+  const now = narrowChart();
+  if (now === wasNarrow) return;
+  wasNarrow = now;
+  render();
+}
+const chartBp = window.matchMedia('(max-width: 620px)');
+if (chartBp.addEventListener) chartBp.addEventListener('change', onViewportChange);
+else chartBp.addListener(onViewportChange);
+window.addEventListener('resize', onViewportChange, { passive: true });
+window.addEventListener('orientationchange', onViewportChange);
 
 renderInputs();
 render();
