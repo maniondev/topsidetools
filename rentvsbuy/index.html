@@ -368,21 +368,58 @@
     .js .reveal { opacity: 1; transform: none; transition: none; }
     .btn:hover, .coffee:hover { transform: none; }
   }
+
+  /* ---------- sticky nav + split hero ---------- */
+  .nav{position:sticky;top:0;z-index:30;background:rgba(240,234,224,.9);backdrop-filter:blur(10px);border-bottom:1px solid rgba(10,45,58,.12)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .nav-brand img{width:34px;height:34px;border-radius:9px;display:block}
+  .nav-right{display:flex;align-items:center;gap:22px;font-size:14px;color:var(--muted)}
+  .nav-right a:hover{color:var(--text)}
+
+  .hero{padding:30px 0 58px;text-align:left}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center}
+  .hero-copy{text-align:center}
+  .hero .wordmark{font-size:clamp(46px,5.6vw,76px);line-height:1.02;margin:0 0 10px}
+  .hero .subtitle{margin:0 0 26px}
+  .hero .buttons{display:flex;flex-direction:row;gap:12px;justify-content:center;flex-wrap:wrap;width:auto;max-width:none;margin-top:0}
+  .hero-art{position:relative}
+  .hero-art::before{content:'';position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);
+    width:min(520px,84vw);height:min(520px,84vw);border-radius:50%;
+    background:radial-gradient(circle, rgba(13,80,104,.16), rgba(13,80,104,0) 66%);pointer-events:none}
+  .hero .phone{position:relative;width:min(280px,68vw);margin:0 auto;background:#0A2D3A;border-radius:36px;padding:9px;box-shadow:0 26px 66px rgba(10,45,58,.28)}
+  .hero .phone img{width:100%;display:block;border-radius:28px}
+  .hero .hero-note{position:relative;text-align:center;margin-top:18px}
+
+  .intro{padding:0 0 var(--pad)}
+  .intro-p{font-size:18px;line-height:1.75;color:var(--muted);max-width:62ch;margin:0 auto;text-align:center}
+
+  @media (max-width:860px){
+    .hero{padding:20px 0 42px}
+    .hero-grid{grid-template-columns:1fr;gap:32px}
+    .hero .phone{width:min(232px,60vw)}
+    .nav-right{gap:16px;font-size:13px}
+  }
 </style>
 </head>
 <body>
 
 <div class="stripe"></div>
 
-<header class="hero">
-  <img src="logo.png" alt="Rent vs Buy app icon" class="logo" width="168" height="168">
-  <h1 class="wordmark">Rent vs Buy</h1>
-  <p class="subtitle">Home Calculator</p>
-  <div class="divider"></div>
-  <p class="desc">Renting and buying both have hidden costs. Rent vs Buy accounts for the opportunity cost of your down payment, home equity, invested savings, and more, so you can see the full financial picture.</p>
+<div class="nav"><div class="wrap nav-in">
+  <a class="nav-brand" href="/rentvsbuy/" aria-label="Rent vs Buy"><img src="icon.png" alt=""></a>
+  <div class="nav-right">
+    <a href="https://topsidetools.com">Topside Tools</a>
+    <a href="https://topsidetools.com/contact/">Contact</a>
+  </div>
+</div></div>
 
-  <div class="buttons">
-    <a href="https://apps.apple.com/us/app/rent-vs-buy-calculator/id6768829509" class="btn btn-ios">
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <h1 class="wordmark">Rent vs Buy</h1>
+      <p class="subtitle">Home Calculator</p>
+      <div class="buttons">
+        <a href="https://apps.apple.com/us/app/rent-vs-buy-calculator/id6768829509" class="btn btn-ios">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
       </svg>
@@ -391,8 +428,7 @@
         <span class="btn-label-main">App Store</span>
       </span>
     </a>
-
-    <span class="btn btn-android" aria-hidden="true">
+        <span class="btn btn-android" aria-hidden="true">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
         <path d="M3 20.5v-17c0-.83 .94-1.3 1.6-.8l14 8.5c.6.37.6 1.23 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z"/>
       </svg>
@@ -400,11 +436,16 @@
         <span class="btn-label-sub">Coming soon on</span>
         <span class="btn-label-main">Google Play</span>
       </span>
-    </span>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="phone"><img src="shots/hero-front.png" alt="Rent vs Buy result screen"></div>
+      <p class="hero-note">Free &middot; No ads &middot; No account &middot; Nothing leaves your phone</p>
+    </div>
   </div>
-
-  <p class="hero-note">Free &middot; No ads &middot; No account &middot; Nothing leaves your phone</p>
 </header>
+
+<section class="intro"><div class="wrap"><p class="intro-p">Renting and buying both have hidden costs. Rent vs Buy accounts for the opportunity cost of your down payment, home equity, invested savings, and more, so you can see the full financial picture.</p></div></section>
 
 <section class="shots">
   <div class="wrap">
