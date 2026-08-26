@@ -346,7 +346,7 @@
   /* ---------- footer ---------- */
 
   footer {
-    padding: calc(var(--pad) * .66) 24px calc(var(--pad) * .5);
+    padding: calc(var(--pad) * .82) 0 calc(var(--pad) * .62);
     text-align: center;
     background: var(--cream);
     border-top: 1px solid rgba(10,45,58,.10);
@@ -441,7 +441,14 @@
   /* ---------- closing call to action ---------- */
     .closing-h{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(26px,3.4vw,36px);
     color:var(--text);margin:0 0 22px}
-  .closing-buttons{flex-direction:row;justify-content:center;flex-wrap:wrap;width:auto;max-width:none;margin:0 auto}
+  .closing-buttons{flex-direction:row;justify-content:center;flex-wrap:nowrap;width:auto;max-width:none;margin:0 auto}
+  .closing-buttons .btn{flex:0 1 auto;min-width:0}
+  @media (max-width:430px){
+    .closing-buttons{gap:9px}
+    .closing-buttons .btn{padding:11px 14px}
+    .closing-buttons .btn-label-main{font-size:14px}
+    .closing-buttons .btn-label-sub{font-size:9.5px}
+  }
   .closing-fine{margin-top:18px;font-size:13.5px;color:var(--muted)}
 </style>
 </head>
@@ -488,7 +495,7 @@
         <span class="p back"><img src="shots/hero-back.jpg" alt="Rent vs Buy analysis screen"></span>
         <span class="p front"><img src="shots/hero-front.jpg" alt="Rent vs Buy result screen"></span>
       </div>
-      <p class="hero-note">Free &middot; No ads &middot; No account &middot; Nothing leaves your phone</p>
+      <p class="hero-note">Free &middot; No ads &middot; No account</p>
     </div>
   </div>
 </header>
@@ -645,7 +652,7 @@
           </span>
         </span>
       </div>
-      <p class="closing-fine">Free &middot; No ads &middot; No account &middot; Nothing leaves your phone</p>
+      <p class="closing-fine">Free &middot; No ads &middot; No account</p>
     <p class="footer-links">&copy; 2026 Rent vs Buy &nbsp;&middot;&nbsp; <a href="privacy/">Privacy Policy</a> &nbsp;&middot;&nbsp; <a href="tos/">Terms of Service</a></p>
   </div>
 </footer>
