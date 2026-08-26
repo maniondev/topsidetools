@@ -39,7 +39,7 @@
 
   // Leaving the breakpoint with the menu open would otherwise strand the
   // toggle in its cross state next to a nav the stylesheet has already shown.
-  var wide = window.matchMedia('(min-width: 701px)');
+  var wide = window.matchMedia('(min-width: 761px)');
   var onChange = function (e) { if (e.matches) setOpen(false); };
   if (wide.addEventListener) wide.addEventListener('change', onChange);
   else wide.addListener(onChange);

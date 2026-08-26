@@ -72,29 +72,41 @@
 .masthead.open .mast-toggle .bars i:nth-child(2) { opacity: 0; }
 .masthead.open .mast-toggle .bars i:nth-child(3) { top: 7px; transform: rotate(-45deg); }
 
-@media (max-width: 700px) {
+/* 760 rather than 700: five links plus the brand need 633px, which clears
+   700px by only 20px and would overflow the moment a font loads wider. */
+@media (max-width: 760px) {
   .mast-toggle { display: block; }
 
+  /* Anchored under the button that opened it rather than spanning the screen:
+     the toggle sits top right, so the thumb is already there. `right: 16px`
+     lines the panel up with the toggle's own edge, which the negative margin
+     pushes 8px into the gutter. */
   .mast-nav {
     display: none;
     position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
+    top: calc(100% - 4px);
+    right: 16px;
+    left: auto;
+    min-width: 190px;
+    max-width: min(78vw, 280px);
     flex-direction: column;
     align-items: stretch;
     gap: 0;
     background: var(--teal-d, #093A4C);
-    border-top: 1px solid rgba(244,239,230,.16);
-    box-shadow: 0 12px 28px rgba(9,58,76,.32);
-    padding: 4px 0 8px;
+    border: 1px solid rgba(244,239,230,.18);
+    border-radius: 12px;
+    box-shadow: 0 14px 32px rgba(9,58,76,.38);
+    padding: 6px;
+    overflow: hidden;
   }
   .masthead.open .mast-nav { display: flex; }
 
   .mast-nav a {
-    padding: 13px 24px;
+    padding: 12px 14px;
     border-bottom: 0;
+    border-radius: 8px;
     font-size: 15px;
+    text-align: right;
   }
   .mast-nav a:hover { background: rgba(244,239,230,.09); border-bottom-color: transparent; }
   .mast-nav a[aria-current="page"]:hover { background: none; }
