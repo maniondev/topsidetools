@@ -3,6 +3,18 @@
    in height, colour or spacing. Both pages define --teal-d themselves, but the
    fallbacks are here so this file works standing alone. */
 
+/* The gradient hairline above the masthead. Sticky on its own, so it stays as
+   a thin teal-to-orange line at the top of the window once the header itself
+   has scrolled away. */
+.stripe {
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--teal, #0D5068) 0%, var(--orange, #D4501A) 100%);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
 .masthead {
   background: var(--teal-d, #093A4C);
   color: #F4EFE6;
