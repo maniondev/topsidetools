@@ -450,6 +450,24 @@
     .closing-buttons .btn-label-sub{font-size:9.5px}
   }
   .closing-fine{margin-top:28px;font-size:13.5px;color:var(--muted)}
+
+  /* ---------- subtle brand-colour depth on the flat cream sections ----------
+     Scoped per section rather than on the body: .shots, .free and .support all
+     paint opaque backgrounds, so a page-level wash would vanish behind them. */
+  .hero{
+    background-image:
+      radial-gradient(820px 560px at 82% 6%, rgba(13,80,104,0.10), rgba(13,80,104,0) 62%),
+      radial-gradient(680px 520px at 4% 52%, rgba(212,80,26,0.075), rgba(212,80,26,0) 64%);
+    background-repeat:no-repeat}
+  .features{
+    background-image:
+      radial-gradient(760px 560px at 10% 8%, rgba(13,80,104,0.075), rgba(13,80,104,0) 62%),
+      radial-gradient(700px 540px at 92% 88%, rgba(212,80,26,0.065), rgba(212,80,26,0) 64%);
+    background-repeat:no-repeat}
+  footer{
+    background-image:
+      radial-gradient(900px 520px at 50% 110%, rgba(13,80,104,0.085), rgba(13,80,104,0) 64%);
+    background-repeat:no-repeat}
 </style>
 </head>
 <body>
