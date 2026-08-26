@@ -386,8 +386,13 @@
   .hero-art::before{content:'';position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);
     width:min(520px,84vw);height:min(520px,84vw);border-radius:50%;
     background:radial-gradient(circle, rgba(13,80,104,.16), rgba(13,80,104,0) 66%);pointer-events:none}
-  .hero .phone{position:relative;width:min(280px,68vw);margin:0 auto;background:#0A2D3A;border-radius:36px;padding:9px;box-shadow:0 26px 66px rgba(10,45,58,.28)}
-  .hero .phone img{width:100%;display:block;border-radius:28px}
+  .hero .duo{position:relative;display:flex;align-items:flex-end;justify-content:center}
+  .hero .duo .p{display:block;background:#0A2D3A;border-radius:30px;padding:7px;flex:none}
+  .hero .duo .p img{display:block;width:100%;border-radius:24px}
+  .hero .duo .back{width:186px;transform:rotate(-5deg) translateY(-30px);margin-right:-50px;
+    box-shadow:0 18px 44px rgba(10,45,58,.30);opacity:.97}
+  .hero .duo .front{width:224px;transform:rotate(2deg);position:relative;z-index:2;
+    box-shadow:0 22px 56px rgba(10,45,58,.34)}
   .hero .hero-note{position:relative;text-align:center;margin-top:18px}
 
   .intro{padding:0 0 var(--pad)}
@@ -396,7 +401,8 @@
   @media (max-width:860px){
     .hero{padding:20px 0 42px}
     .hero-grid{grid-template-columns:1fr;gap:32px}
-    .hero .phone{width:min(232px,60vw)}
+    .hero .duo .back{width:150px;margin-right:-40px;transform:rotate(-5deg) translateY(-24px)}
+    .hero .duo .front{width:180px}
     .nav-right{gap:16px;font-size:13px}
   }
 </style>
@@ -439,7 +445,10 @@
       </div>
     </div>
     <div class="hero-art">
-      <div class="phone"><img src="shots/hero-front.png" alt="Rent vs Buy result screen"></div>
+      <div class="duo">
+        <span class="p back"><img src="shots/hero-back.png" alt="Rent vs Buy analysis screen"></span>
+        <span class="p front"><img src="shots/hero-front.png" alt="Rent vs Buy result screen"></span>
+      </div>
       <p class="hero-note">Free &middot; No ads &middot; No account &middot; Nothing leaves your phone</p>
     </div>
   </div>
