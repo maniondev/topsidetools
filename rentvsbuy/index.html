@@ -405,6 +405,31 @@
     .hero .duo .front{width:180px}
     .nav-right{gap:16px;font-size:13px}
   }
+
+  /* ---------- screenshot carousel ---------- */
+  .carousel{position:relative;margin-top:8px}
+  .track{list-style:none;margin:0;padding:4px 0 18px;display:flex;gap:20px;
+    overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;
+    scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+  .track::-webkit-scrollbar{display:none}
+  .slide{flex:0 0 auto;scroll-snap-align:center;width:clamp(210px,72vw,268px)}
+  .slide img{width:100%;height:auto;display:block;border-radius:20px;
+    box-shadow:0 16px 40px rgba(10,45,58,.16)}
+  .car-nav{position:absolute;top:calc(50% - 12px);transform:translateY(-50%);z-index:3;
+    width:42px;height:42px;border-radius:50%;border:1px solid rgba(10,45,58,.16);
+    background:rgba(255,255,255,.94);color:var(--teal);display:none;place-items:center;
+    cursor:pointer;box-shadow:0 4px 14px rgba(10,45,58,.12);transition:background .15s,border-color .15s}
+  .car-nav:hover{background:#fff;border-color:rgba(10,45,58,.32)}
+  .car-nav:disabled{opacity:.32;cursor:default}
+  .car-nav.prev{left:-10px}
+  .car-nav.next{right:-10px}
+  .car-hint{text-align:center;font-size:13px;color:var(--muted);margin-top:2px}
+  @media (min-width:861px){
+    .slide{width:clamp(230px,23vw,272px)}
+    .car-nav{display:grid}
+    .car-hint{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){ .track{scroll-behavior:auto} }
 </style>
 </head>
 <body>
@@ -464,20 +489,23 @@
       <p class="lede">Most calculators stop at the monthly payment. This one runs both paths all the way out, covering equity, appreciation, invested savings and taxes, then tells you who ends up ahead.</p>
     </div>
 
-    <div class="shot-row">
-      <figure class="reveal">
-        <img class="shot" src="shots/calculator.png" alt="The calculator screen showing renting ahead by $54K over ten years" width="303" height="660" loading="lazy">
-        <figcaption>A straight verdict at 1, 5, 10, 20 and 30&nbsp;years</figcaption>
-      </figure>
-      <figure class="reveal">
-        <img class="shot" src="shots/analysis.png" alt="Net worth over time chart comparing renter and buyer net worth" width="303" height="660" loading="lazy">
-        <figcaption>Net worth for both paths, side by side over time</figcaption>
-      </figure>
-      <figure class="reveal">
-        <img class="shot" src="shots/breakeven.png" alt="Break-even appreciation and break-even stock return tables" width="303" height="660" loading="lazy">
-        <figcaption>The exact rates where the answer flips</figcaption>
-      </figure>
+    <div class="carousel" role="group" aria-roledescription="carousel" aria-label="App screenshots">
+      <button class="car-nav prev" type="button" aria-label="Previous screenshots">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <ul class="track">
+          <li class="slide"><img src="shots/store/1.png" alt="Net worth, not cash flow: the calculator verdict screen" width="350" height="760" loading="lazy" draggable="false"></li>
+          <li class="slide"><img src="shots/store/2.png" alt="See the results over 30 years: net worth over time" width="350" height="760" loading="lazy" draggable="false"></li>
+          <li class="slide"><img src="shots/store/3.png" alt="No ads, no paywalls: monthly cost and sensitivity analysis" width="350" height="760" loading="lazy" draggable="false"></li>
+          <li class="slide"><img src="shots/store/4.png" alt="Calculate the opportunity cost: monthly cash flow detail" width="350" height="760" loading="lazy" draggable="false"></li>
+          <li class="slide"><img src="shots/store/5.png" alt="How equity builds over time: buyer net worth breakdown" width="350" height="760" loading="lazy" draggable="false"></li>
+          <li class="slide"><img src="shots/store/6.png" alt="Fine-tune 18 assumptions: the assumptions screen" width="350" height="760" loading="lazy" draggable="false"></li>
+      </ul>
+      <button class="car-nav next" type="button" aria-label="More screenshots">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
     </div>
+    <p class="car-hint">Swipe to see more</p>
   </div>
 </section>
 
@@ -648,6 +676,39 @@
       });
     }
   })();
+</script>
+
+<script>
+(function(){
+  var car = document.querySelector('.carousel');
+  if (!car) return;
+  var track = car.querySelector('.track');
+  var prev  = car.querySelector('.prev');
+  var next  = car.querySelector('.next');
+
+  function step(){
+    var slide = track.querySelector('.slide');
+    if (!slide) return track.clientWidth;
+    var gap = parseFloat(getComputedStyle(track).gap) || 0;
+    var per = Math.max(1, Math.floor(track.clientWidth / (slide.offsetWidth + gap)));
+    return (slide.offsetWidth + gap) * per;
+  }
+  function sync(){
+    var max = track.scrollWidth - track.clientWidth - 1;
+    prev.disabled = track.scrollLeft <= 0;
+    next.disabled = track.scrollLeft >= max;
+  }
+  prev.addEventListener('click', function(){ track.scrollBy({left:-step(), behavior:'smooth'}); });
+  next.addEventListener('click', function(){ track.scrollBy({left: step(), behavior:'smooth'}); });
+  track.addEventListener('scroll', sync, {passive:true});
+  window.addEventListener('resize', sync);
+  track.setAttribute('tabindex','0');
+  track.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight'){ e.preventDefault(); track.scrollBy({left: step(), behavior:'smooth'}); }
+    if (e.key === 'ArrowLeft'){  e.preventDefault(); track.scrollBy({left:-step(), behavior:'smooth'}); }
+  });
+  sync();
+})();
 </script>
 
 </body>
