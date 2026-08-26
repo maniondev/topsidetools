@@ -372,6 +372,12 @@
   .hero .subtitle{margin:0 0 26px}
   .hero .buttons{display:flex;flex-direction:row;gap:12px;justify-content:center;flex-wrap:wrap;width:auto;max-width:none;margin-top:0}
   .hero-art{position:relative}
+  /* Two columns centred on each other put the taller one's top edge above the
+     shorter one's, so the front phone finished level with the top of the hero
+     and crowded the masthead. Drop the art alone rather than padding the whole
+     hero, which would push the wordmark down with it. Desktop only: below
+     860px the art sits under the copy, where a top offset is just a gap. */
+  @media (min-width:861px){ .hero-art{ padding-top:56px } }
   .hero-art::before{content:'';position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);
     width:min(520px,84vw);height:min(520px,84vw);border-radius:50%;
     background:radial-gradient(circle, rgba(143,196,214,.28), rgba(143,196,214,0) 66%);pointer-events:none}
