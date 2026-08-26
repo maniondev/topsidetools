@@ -346,11 +346,12 @@
   /* ---------- footer ---------- */
 
   footer {
-    padding: 34px 24px 40px;
+    padding: calc(var(--pad) * .66) 24px calc(var(--pad) * .5);
     text-align: center;
     background: var(--cream);
+    border-top: 1px solid rgba(10,45,58,.10);
   }
-  .footer-links { margin-top: 6px; font-size: 11.5px; color: var(--muted); }
+  .footer-links { margin-top: 26px; font-size: 11.5px; color: var(--muted); }
   .footer-links a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
 
   /* ---------- reveal on scroll (JS only, so no-JS still shows all) ---------- */
@@ -438,8 +439,7 @@
   @media (prefers-reduced-motion: reduce){ .track{scroll-behavior:auto} }
 
   /* ---------- closing call to action ---------- */
-  .closing{padding:calc(var(--pad) * .8) 0;text-align:center;border-top:1px solid rgba(10,45,58,.10)}
-  .closing-h{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(26px,3.4vw,36px);
+    .closing-h{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(26px,3.4vw,36px);
     color:var(--text);margin:0 0 22px}
   .closing-buttons{flex-direction:row;justify-content:center;flex-wrap:wrap;width:auto;max-width:none;margin:0 auto}
   .closing-fine{margin-top:18px;font-size:13.5px;color:var(--muted)}
@@ -473,13 +473,14 @@
       </span>
     </a>
         <span class="btn btn-android" aria-hidden="true">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M3 20.5v-17c0-.83 .94-1.3 1.6-.8l14 8.5c.6.37.6 1.23 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z"/>
-      </svg>
-      <span class="btn-label">
-        <span class="btn-label-sub">Coming soon on</span>
-        <span class="btn-label-main">Google Play</span>
-      </span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 20.5v-17c0-.83 .94-1.3 1.6-.8l14 8.5c.6.37.6 1.23 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z"/>
+          </svg>
+          <span class="btn-label">
+            <span class="btn-label-sub">Coming soon on</span>
+            <span class="btn-label-main">Google Play</span>
+          </span>
+        </span>
       </div>
     </div>
     <div class="hero-art">
@@ -621,10 +622,9 @@
 </section>
 
 
-<section class="closing">
-  <div class="wrap">
-    <div class="reveal">
-      <p class="closing-h">Run your own numbers.</p>
+<footer>
+  <div class="wrap reveal">
+    <p class="closing-h">Run your own numbers.</p>
       <div class="buttons closing-buttons">
         <a href="https://apps.apple.com/us/app/rent-vs-buy-calculator/id6768829509" class="btn btn-ios">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -636,21 +636,18 @@
       </span>
     </a>
         <span class="btn btn-android" aria-hidden="true">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M3 20.5v-17c0-.83 .94-1.3 1.6-.8l14 8.5c.6.37.6 1.23 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z"/>
-      </svg>
-      <span class="btn-label">
-        <span class="btn-label-sub">Coming soon on</span>
-        <span class="btn-label-main">Google Play</span>
-      </span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 20.5v-17c0-.83 .94-1.3 1.6-.8l14 8.5c.6.37.6 1.23 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z"/>
+          </svg>
+          <span class="btn-label">
+            <span class="btn-label-sub">Coming soon on</span>
+            <span class="btn-label-main">Google Play</span>
+          </span>
+        </span>
       </div>
       <p class="closing-fine">Free &middot; No ads &middot; No account &middot; Nothing leaves your phone</p>
-    </div>
+    <p class="footer-links">&copy; 2026 Rent vs Buy &nbsp;&middot;&nbsp; <a href="privacy/">Privacy Policy</a> &nbsp;&middot;&nbsp; <a href="tos/">Terms of Service</a></p>
   </div>
-</section>
-
-<footer>
-  <p class="footer-links">&copy; 2026 Rent vs Buy &nbsp;&middot;&nbsp; <a href="privacy/">Privacy Policy</a> &nbsp;&middot;&nbsp; <a href="tos/">Terms of Service</a></p>
 </footer>
 
 <script>
