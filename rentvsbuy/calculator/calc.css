@@ -67,7 +67,7 @@ a { color: var(--teal); }
 .side-head { display: flex; align-items: baseline; justify-content: space-between; padding: 16px 18px 10px; }
 .side-head h2 { font-size: 18px; }
 .reset { background: none; border: 0; color: var(--muted); font: inherit; font-size: 13px; cursor: pointer; text-decoration: underline; padding: 2px; }
-.reset:hover { color: var(--rust); }
+@media (hover: hover) { .reset:hover { color: var(--rust); } }
 
 .group { border-top: 1px solid var(--line-soft); }
 .group > summary {
@@ -84,7 +84,7 @@ a { color: var(--teal); }
 .group > summary::-webkit-details-marker { display: none; }
 .group > summary::after { content: '+'; font-size: 15px; color: var(--muted); }
 .group[open] > summary::after { content: '\2212'; }
-.group > summary:hover { color: var(--teal); background: var(--cream2); }
+@media (hover: hover) { .group > summary:hover { color: var(--teal); background: var(--cream2); } }
 .group-body { padding: 2px 18px 14px; display: flex; flex-direction: column; gap: 10px; }
 
 .field { display: grid; grid-template-columns: 1fr 116px; gap: 10px; align-items: center; }
@@ -133,7 +133,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-app
   border-radius: 10px;
   cursor: pointer;
 }
-.horizons button:hover { border-color: var(--teal); color: var(--teal); }
+@media (hover: hover) { .horizons button:hover { border-color: var(--teal); color: var(--teal); } }
 .horizons button[aria-pressed="true"] { background: var(--teal); border-color: var(--teal); color: #fff; font-weight: 700; }
 
 /* ── Net worth cards ────────────────────────────────────────────────────── */
@@ -164,7 +164,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-app
 .sec > summary::-webkit-details-marker { display: none; }
 .sec > summary::after { content: '+'; color: var(--muted); font-size: 17px; flex: none; }
 .sec[open] > summary::after { content: '\2212'; }
-.sec > summary:hover { background: var(--cream2); }
+@media (hover: hover) { .sec > summary:hover { background: var(--cream2); } }
 .sec .sec-title { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--teal); }
 .sec .sec-sub { display: block; font-size: 13px; letter-spacing: 0; text-transform: none; font-weight: 400; color: var(--muted); margin-top: 2px; }
 .sec-body { padding: 4px 18px 18px; }
@@ -179,6 +179,8 @@ tbody tr + tr td { border-top: 1px solid var(--line-soft); }
 tbody tr.total td { border-top: 1.5px solid var(--line); font-weight: 700; }
 td.rent, th.rent { color: var(--teal); }
 td.buy,  th.buy  { color: var(--rust); }
+.win-rent { color: var(--teal); }
+.win-buy  { color: var(--rust); }
 tr.is-current { background: var(--teal-bg); }
 
 .note { font-size: 12.5px; color: var(--muted); margin-top: 12px; line-height: 1.5; }
@@ -214,6 +216,8 @@ tr.is-current { background: var(--teal-bg); }
 .sens td.cell.here { outline: 2.5px solid var(--text); outline-offset: 1px; }
 .sens th { font-size: 11.5px; color: var(--muted); font-weight: 500; }
 .sens th.corner { font-size: 10px; line-height: 1.25; text-align: left; color: var(--muted); }
+.sens .corner-short { display: none; }
+.sens .corner-long  { display: inline; }
 
 /* ── Footer ─────────────────────────────────────────────────────────────── */
 
@@ -224,3 +228,67 @@ tr.is-current { background: var(--teal-bg); }
 .disclaimer { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
 
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* ── Wide tables on narrow screens ──────────────────────────────────────── */
+/* The breakdown tables run to six and seven columns, which no phone fits.
+   Rather than leave them scrolling sideways inside their own box, each row
+   becomes a card and every value carries its column name from data-label.
+   Applied only where it earns its keep: three-column tables still fit. */
+
+@media (max-width: 620px) {
+  table.stack, table.stack tbody { display: block; }
+  table.stack thead { display: none; }
+
+  table.stack tr {
+    display: block;
+    background: #fff;
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+    padding: 2px 12px 4px;
+    margin-bottom: 8px;
+  }
+  table.stack tr.is-current { background: var(--teal-bg); border-color: var(--teal); }
+  table.stack tbody tr + tr td { border-top: 0; }
+
+  table.stack td {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 7px 0;
+    text-align: right;
+    white-space: normal;
+  }
+  table.stack td + td { border-top: 1px solid var(--line-soft); }
+  table.stack td::before {
+    content: attr(data-label);
+    flex: 0 1 auto;
+    text-align: left;
+    color: var(--muted);
+    font-size: 12.5px;
+    font-weight: 400;
+  }
+
+  /* The first cell names the row, so it reads as the card's heading rather
+     than as another label and value pair. */
+  table.stack td:first-child {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text);
+    padding: 9px 0 7px;
+  }
+  table.stack td:first-child::before { content: none; }
+
+  /* Tables that stay tabular still need to fit. The base 10px of horizontal
+     cell padding is what pushes them over on a 289px column, not the text. */
+  table:not(.stack) th, table:not(.stack) td { padding: 8px 5px; }
+
+  /* The sensitivity grid has to stay a grid, so it shrinks instead. */
+  .sens { border-spacing: 2px; }
+  .sens td.cell { min-width: 0; padding: 9px 2px; font-size: 11.5px; }
+  .sens th { font-size: 10.5px; padding: 4px 2px; }
+  .sens th.corner { font-size: 9px; line-height: 1.2; }
+  /* The full axis wording alone claimed 106px of the 289 available. */
+  .sens .corner-long  { display: none; }
+  .sens .corner-short { display: inline; }
+}

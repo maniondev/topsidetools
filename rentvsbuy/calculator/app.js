@@ -19,18 +19,16 @@ const STORE_KEY = 'rvb_inputs_v1';
 // page and the easiest thing to get wrong twice.
 
 const GROUPS = [
-  { name: 'The basics', open: true, fields: [
+  { name: 'Renting assumptions', open: true, fields: [
     ['monthlyRent',            'Monthly rent',            'money'],
-    ['homePrice',              'Home price',              'money'],
-    ['downPaymentPct',         'Down payment',            'pct', 'Under 20% adds PMI'],
-  ]},
-  { name: 'If you rent', open: false, fields: [
     ['rentAppreciation',       'Yearly rent increase',    'pct'],
     ['equityReturn',           'Expected stock return',   'pct', 'What the down payment earns instead'],
     ['rentersInsuranceAnnual', "Renter's insurance",      'money', 'Per year'],
     ['renterUtilities',        'Utilities',               'money', 'Per month'],
   ]},
-  { name: 'If you buy', open: false, fields: [
+  { name: 'Buying assumptions', open: true, fields: [
+    ['homePrice',              'Home price',              'money'],
+    ['downPaymentPct',         'Down payment',            'pct', 'Under 20% adds PMI'],
     ['mortgageRate',           'Mortgage rate',           'pct'],
     ['mortgageTerm',           'Mortgage term',           'years'],
     ['closingCostsPct',        'Closing costs',           'pct', 'Share of home price'],
@@ -42,7 +40,7 @@ const GROUPS = [
     ['hoa',                    'HOA',                     'money', 'Per month'],
     ['buyerUtilities',         'Utilities',               'money', 'Per month'],
   ]},
-  { name: 'Tax', open: false, fields: [
+  { name: 'Tax assumptions', open: false, fields: [
     ['standardDeduction',      'Standard deduction',      'money'],
     ['taxRate',                'Marginal tax rate',       'pct', 'Federal plus state'],
   ]},
@@ -86,6 +84,19 @@ const yr = (n) => `${n} ${n === 1 ? 'year' : 'years'}`;
 /** Percent held as 0 to 1, shown as a whole number with no trailing zeros. */
 const pctIn = (v) => String(Number((v * 100).toFixed(4)));
 
+/**
+ * Money inputs carry thousand separators, which means they cannot be
+ * <input type="number">: a browser refuses to parse "600,000" and hands back
+ * an empty string. They are text inputs with inputmode="numeric" instead, so
+ * phones still raise a number pad.
+ *
+ * Reformatting happens on blur rather than on every keystroke. Rewriting the
+ * value while someone is typing moves the caret to the end, so inserting a
+ * digit in the middle of a figure becomes impossible.
+ */
+const groupNum = (v) => Number(v).toLocaleString('en-US', { maximumFractionDigits: 2 });
+const ungroup = (str) => parseFloat(String(str).replace(/[^0-9.-]/g, ''));
+
 function section(title, sub, body, open = false) {
   return `<details class="sec"${open ? ' open' : ''}>
     <summary><span class="sec-title">${esc(title)}${sub ? `<span class="sec-sub">${esc(sub)}</span>` : ''}</span></summary>
@@ -96,6 +107,24 @@ function section(title, sub, body, open = false) {
 const table = (head, rows, cls = '') =>
   `<div class="scroller"><table class="${cls}"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`;
 
+/**
+ * A table whose cells carry their own column name.
+ *
+ * Below 620px calc.css hides the header row and turns each row into a card,
+ * reading the column name back out of data-label. Generating that attribute
+ * here rather than writing it on every cell means a column cannot be renamed
+ * in the header and left stale in the body.
+ */
+function dataTable(cols, rows, stack = true) {
+  const head = cols.map((c) => `<th${c.cls ? ` class="${c.cls}"` : ''}>${esc(c.label)}</th>`).join('');
+  const body = rows.map((r) => {
+    const cells = r.cells.map((cell, i) =>
+      `<td data-label="${esc(cols[i].label)}"${cols[i].cls ? ` class="${cols[i].cls}"` : ''}>${cell}</td>`).join('');
+    return `<tr${r.cls ? ` class="${r.cls}"` : ''}>${cells}</tr>`;
+  }).join('');
+  return `<div class="scroller"><table class="${stack ? 'stack' : ''}"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+
 const kv = (k, v, cls = '') => `<div class="kv"><span class="k">${esc(k)}</span><span class="v ${cls}">${v}</span></div>`;
 
 // ── Inputs ──────────────────────────────────────────────────────────────────
@@ -104,25 +133,31 @@ function renderInputs() {
   const form = document.getElementById('inputs');
   form.querySelectorAll('.group').forEach((n) => n.remove());
 
+  // Below the two-column breakpoint the inputs sit above the results, so
+  // leaving every group open would bury the answer under seventeen fields.
+  const narrow = window.matchMedia('(max-width: 940px)').matches;
+
   for (const g of GROUPS) {
     const fields = g.fields.map(([key, label, kind, hint]) => {
       const isPct = kind === 'pct';
-      const val = isPct ? pctIn(inputs[key]) : String(inputs[key]);
+      const isMoney = kind === 'money';
+      const val = isPct ? pctIn(inputs[key]) : isMoney ? groupNum(inputs[key]) : String(inputs[key]);
       const wrapCls = isPct || kind === 'years' ? 'suffix' : 'prefix';
       const affix = isPct ? '%' : kind === 'years' ? 'yr' : '$';
-      const step = isPct ? '0.05' : kind === 'years' ? '1' : '100';
+      const attrs = isMoney
+        ? 'type="text" inputmode="numeric" autocomplete="off"'
+        : `type="number" step="${isPct ? '0.05' : '1'}" inputmode="decimal"`;
       return `<div class="field">
         <label for="f-${key}">${esc(label)}${hint ? `<span class="hint">${esc(hint)}</span>` : ''}</label>
         <span class="inputwrap ${wrapCls}">
-          <input id="f-${key}" name="${key}" data-kind="${kind}" type="number" step="${step}"
-                 inputmode="decimal" value="${val}">
+          <input id="f-${key}" name="${key}" data-kind="${kind}" ${attrs} value="${val}">
           <span class="affix">${affix}</span>
         </span>
       </div>`;
     }).join('');
 
     form.insertAdjacentHTML('beforeend',
-      `<details class="group"${g.open ? ' open' : ''}>
+      `<details class="group"${g.open && !narrow ? ' open' : ''}>
         <summary>${esc(g.name)}</summary>
         <div class="group-body">${fields}</div>
       </details>`);
@@ -208,14 +243,17 @@ function secNetWorthOverTime(r) {
 
 // 2 ─ Net worth comparison
 function secNetWorthComparison(r) {
-  const rows = r.periods.map((p) => `<tr${p.years === horizon ? ' class="is-current"' : ''}>
-    <td>${yr(p.years)}</td>
-    <td class="rent">${money(p.renterNetWorth)}</td>
-    <td class="buy">${money(p.buyerNetWorth)}</td>
-    <td class="${p.difference > 0 ? 'rent' : 'buy'}"><strong>${p.difference > 0 ? 'Renting' : 'Buying'}</strong> by ${compact(Math.abs(p.difference))}</td>
-  </tr>`).join('');
-  return section('Net worth comparison', 'What each path is worth at the end',
-    table('<th>Horizon</th><th class="rent">Renting</th><th class="buy">Buying</th><th>Winner</th>', rows));
+  const cols = [{ label: 'Horizon' }, { label: 'Renting', cls: 'rent' }, { label: 'Buying', cls: 'buy' }, { label: 'Winner' }];
+  const rows = r.periods.map((p) => ({
+    cls: p.years === horizon ? 'is-current' : '',
+    cells: [
+      yr(p.years),
+      money(p.renterNetWorth),
+      money(p.buyerNetWorth),
+      `<span class="${p.difference > 0 ? 'win-rent' : 'win-buy'}"><strong>${p.difference > 0 ? 'Renting' : 'Buying'}</strong> by ${compact(Math.abs(p.difference))}</span>`,
+    ],
+  }));
+  return section('Net worth comparison', 'What each path is worth at the end', dataTable(cols, rows));
 }
 
 // 3 ─ Break-even year
@@ -313,7 +351,7 @@ function secMonthlyCostOverTime(r) {
 // 7 ─ Sensitivity
 function secSensitivity() {
   const grid = sensitivityGrid(inputs, sensHorizon);
-  const head = `<tr><th class="corner">Appreciation&nbsp;↓<br>Stock return&nbsp;→</th>${
+  const head = `<tr><th class="corner"><span class="corner-long">Appreciation&nbsp;↓<br>Stock&nbsp;return&nbsp;→</span><span class="corner-short">Appr&nbsp;↓<br>Stock&nbsp;→</span></th>${
     grid[0].cols.map((c) => `<th>${formatPercent(c.equityReturn)}</th>`).join('')}</tr>`;
   const rows = grid.map((row) => `<tr><th>${formatPercent(row.appreciation)}</th>${
     row.cols.map((c) => `<td class="cell ${c.rentWins ? 'r' : 'b'}${row.isCurrentApp && c.isCurrentEq ? ' here' : ''}">${c.rentWins ? 'Rent' : 'Buy'}</td>`).join('')
@@ -348,33 +386,51 @@ function secBreakEvenReturn(r) {
 
 // 10 ─ Buyer net worth breakdown
 function secBuyerBreakdown(r) {
-  const rows = r.periods.map((p) => `<tr${p.years === horizon ? ' class="is-current"' : ''}>
-    <td>${p.years}y</td><td>${compact(p.homeValue)}</td><td>${compact(-p.remainingMortgage)}</td>
-    <td>${compact(p.homeEquity)}</td><td>${compact(p.investedTaxSavings)}</td>
-    <td>${compact(p.ownerInvestedSavings)}</td><td class="buy"><strong>${compact(p.buyerNetWorth)}</strong></td></tr>`).join('');
-  return section('Buyer net worth breakdown', 'Where the owner’s money ends up',
-    table('<th>Horizon</th><th>Home value</th><th>Mortgage left</th><th>Equity</th><th>Invested tax saving</th><th>Invested monthly saving</th><th class="buy">Total</th>', rows) +
+  const cols = [
+    { label: 'Horizon' }, { label: 'Home value' }, { label: 'Mortgage left' }, { label: 'Equity' },
+    { label: 'Invested tax saving' }, { label: 'Invested monthly saving' }, { label: 'Total', cls: 'buy' },
+  ];
+  const rows = r.periods.map((p) => ({
+    cls: p.years === horizon ? 'is-current' : '',
+    cells: [
+      yr(p.years), compact(p.homeValue), compact(-p.remainingMortgage), compact(p.homeEquity),
+      compact(p.investedTaxSavings), compact(p.ownerInvestedSavings), `<strong>${compact(p.buyerNetWorth)}</strong>`,
+    ],
+  }));
+  return section('Buyer net worth breakdown', 'Where the owner\u2019s money ends up',
+    dataTable(cols, rows) +
     `<p class="note">Equity is the down payment plus principal repaid plus appreciation. Invested monthly saving covers months where owning was cheaper than renting, invested at ${formatPercent(inputs.equityReturn)}.</p>`);
 }
 
 // 11 ─ Renter portfolio breakdown
 function secRenterBreakdown(r) {
-  const rows = r.periods.map((p) => `<tr${p.years === horizon ? ' class="is-current"' : ''}>
-    <td>${p.years}y</td><td>${compact(p.renterInitialCompounded)}</td>
-    <td>${compact(p.renterInvestedSavings)}</td><td class="rent"><strong>${compact(p.renterNetWorth)}</strong></td></tr>`).join('');
-  return section('Renter portfolio breakdown', 'Where the renter’s money ends up',
-    table('<th>Horizon</th><th>Down payment invested</th><th>Monthly savings invested</th><th class="rent">Total</th>', rows) +
+  const cols = [
+    { label: 'Horizon' }, { label: 'Down payment invested' }, { label: 'Monthly savings invested' }, { label: 'Total', cls: 'rent' },
+  ];
+  const rows = r.periods.map((p) => ({
+    cls: p.years === horizon ? 'is-current' : '',
+    cells: [yr(p.years), compact(p.renterInitialCompounded), compact(p.renterInvestedSavings), `<strong>${compact(p.renterNetWorth)}</strong>`],
+  }));
+  return section('Renter portfolio breakdown', 'Where the renter\u2019s money ends up',
+    dataTable(cols, rows) +
     `<p class="note">The renter starts by investing the full ${money(r.initialInvestment)} the buyer spent on the down payment and closing costs, then adds the monthly difference whenever renting is cheaper.</p>`);
 }
 
 // 12 ─ Tax benefit breakdown
 function secTaxBreakdown(r) {
-  const rows = r.periods.map((p) => `<tr${p.years === horizon ? ' class="is-current"' : ''}>
-    <td>${p.years}y</td><td>${compact(p.totalInterestPaid)}</td><td>${compact(p.totalPropTaxPaid)}</td>
-    <td>${compact(p.itemizedDeductions)}</td><td>${compact(p.taxBenefit)}</td>
-    <td>${money(p.monthlyTaxBenefit)}</td></tr>`).join('');
+  const cols = [
+    { label: 'Horizon' }, { label: 'Interest paid' }, { label: 'Property tax paid' },
+    { label: 'Itemised' }, { label: 'Tax benefit' }, { label: 'Per month' },
+  ];
+  const rows = r.periods.map((p) => ({
+    cls: p.years === horizon ? 'is-current' : '',
+    cells: [
+      yr(p.years), compact(p.totalInterestPaid), compact(p.totalPropTaxPaid),
+      compact(p.itemizedDeductions), compact(p.taxBenefit), money(p.monthlyTaxBenefit),
+    ],
+  }));
   return section('Tax benefit breakdown', 'What itemising is actually worth to the owner',
-    table('<th>Horizon</th><th>Interest paid</th><th>Property tax paid</th><th>Itemised</th><th>Tax benefit</th><th>Per month</th>', rows) +
+    dataTable(cols, rows) +
     `<p class="note">Only deductions above the ${money(inputs.standardDeduction)} standard deduction are worth anything, valued at your ${formatPercent(inputs.taxRate)} marginal rate. The benefit shrinks every year as the interest portion of the payment falls, which is why the monthly figure is an average rather than a constant.</p>`);
 }
 
@@ -383,12 +439,18 @@ function secTaxBreakdown(r) {
 document.getElementById('inputs').addEventListener('input', (e) => {
   const el = e.target;
   if (!el.name || !(el.name in inputs)) return;
-  const raw = parseFloat(el.value);
+  const raw = el.dataset.kind === 'money' ? ungroup(el.value) : parseFloat(el.value);
   if (!isFinite(raw)) return;              // mid-edit empty box: leave the model alone
   inputs[el.name] = el.dataset.kind === 'pct' ? raw / 100 : raw;
   saveInputs();
   render();
 });
+
+document.getElementById('inputs').addEventListener('blur', (e) => {
+  const el = e.target;
+  if (!el.name || el.dataset.kind !== 'money' || !(el.name in inputs)) return;
+  el.value = groupNum(inputs[el.name]);
+}, true);
 
 document.getElementById('reset').addEventListener('click', () => {
   inputs = { ...DEFAULT_INPUTS };
