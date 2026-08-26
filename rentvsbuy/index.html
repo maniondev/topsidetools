@@ -413,8 +413,14 @@
     scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
   .track::-webkit-scrollbar{display:none}
   .slide{flex:0 0 auto;scroll-snap-align:center;width:clamp(210px,72vw,268px)}
+  .slide{position:relative}
   .slide img{width:100%;height:auto;display:block;border-radius:20px;
     box-shadow:0 16px 40px rgba(10,45,58,.16)}
+  /* Each App Store frame cuts the phone off at its bottom edge. Fade it out so
+     the crop reads as intentional rather than as a section boundary in the wrong place. */
+  .slide::after{content:'';position:absolute;left:0;right:0;bottom:0;height:72px;
+    border-radius:0 0 20px 20px;pointer-events:none;
+    background:linear-gradient(to bottom, rgba(231,223,210,0) 0%, rgba(231,223,210,.72) 62%, rgba(231,223,210,1) 100%)}
   .car-nav{position:absolute;top:calc(50% - 12px);transform:translateY(-50%);z-index:3;
     width:42px;height:42px;border-radius:50%;border:1px solid rgba(10,45,58,.16);
     background:rgba(255,255,255,.94);color:var(--teal);display:none;place-items:center;
@@ -494,12 +500,12 @@
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
       <ul class="track">
-          <li class="slide"><img src="shots/store/1.png" alt="Net worth, not cash flow: the calculator verdict screen" width="350" height="760" loading="lazy" draggable="false"></li>
-          <li class="slide"><img src="shots/store/2.png" alt="See the results over 30 years: net worth over time" width="350" height="760" loading="lazy" draggable="false"></li>
-          <li class="slide"><img src="shots/store/3.png" alt="No ads, no paywalls: monthly cost and sensitivity analysis" width="350" height="760" loading="lazy" draggable="false"></li>
-          <li class="slide"><img src="shots/store/4.png" alt="Calculate the opportunity cost: monthly cash flow detail" width="350" height="760" loading="lazy" draggable="false"></li>
-          <li class="slide"><img src="shots/store/5.png" alt="How equity builds over time: buyer net worth breakdown" width="350" height="760" loading="lazy" draggable="false"></li>
-          <li class="slide"><img src="shots/store/6.png" alt="Fine-tune 18 assumptions: the assumptions screen" width="350" height="760" loading="lazy" draggable="false"></li>
+          <li class="slide"><img src="shots/store/1.jpg" alt="Net worth, not cash flow: the calculator verdict screen" width="719" height="1560" loading="lazy" draggable="false"></li>
+          <li class="slide"><img src="shots/store/2.jpg" alt="See the results over 30 years: net worth over time" width="719" height="1560" loading="lazy" draggable="false"></li>
+          <li class="slide"><img src="shots/store/3.jpg" alt="No ads, no paywalls: monthly cost and sensitivity analysis" width="719" height="1560" loading="lazy" draggable="false"></li>
+          <li class="slide"><img src="shots/store/4.jpg" alt="Calculate the opportunity cost: monthly cash flow detail" width="719" height="1560" loading="lazy" draggable="false"></li>
+          <li class="slide"><img src="shots/store/5.jpg" alt="How equity builds over time: buyer net worth breakdown" width="719" height="1560" loading="lazy" draggable="false"></li>
+          <li class="slide"><img src="shots/store/6.jpg" alt="Fine-tune 18 assumptions: the assumptions screen" width="719" height="1560" loading="lazy" draggable="false"></li>
       </ul>
       <button class="car-nav next" type="button" aria-label="More screenshots">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
