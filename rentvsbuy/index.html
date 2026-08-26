@@ -447,6 +447,23 @@
     .closing-buttons .btn-label-main{font-size:14px}
     .closing-buttons .btn-label-sub{font-size:9.5px}
   }
+
+  /* Both store buttons the same width. "Download on the / App Store" is a
+     longer label than "Use it in your / Browser", so sized to their own
+     content they come out 19px apart and the pair looks accidental.
+     Equal-width flex siblings need a hardcoded width; grid does not. In a
+     fit-content grid every 1fr column resolves to the widest column's
+     content, so the pair stays as wide as the App Store button and follows
+     the copy if it ever changes. */
+  .hero .buttons,
+  .closing-buttons {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
   .closing-fine{margin-top:28px;font-size:13.5px;color:var(--muted)}
 
   /* ---------- subtle brand-colour depth on the flat cream sections ----------
