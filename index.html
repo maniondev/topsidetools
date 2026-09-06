@@ -126,6 +126,11 @@
   .poster.light .cta{background:#22160D;color:#F5F0E7}
   .poster.light .cta:hover{background:#3A2A1C}
   .poster.light .card-logo{box-shadow:0 8px 22px rgba(60,42,26,0.26)}
+
+  /* Attendra */
+  .poster.att{background-color:#12452A;background-image:linear-gradient(150deg,#1B6540 0%,#123F27 62%,#0D311E 100%)}
+  .card-wordmark{display:block;width:min(300px,100%);height:auto;margin:0 0 16px}
+  @media(max-width:900px){ .card-wordmark{width:min(240px,74%)} }
 </style>
 </head>
 <body>
@@ -181,6 +186,27 @@
       <div class="shot">
         <div class="soon">
           <img src="/doomsday/logo.png" alt="Doomsday app icon">
+          <p class="soon-label">Coming soon</p>
+          <p class="soon-sub">iPhone &amp; Android</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="poster att" href="/attendra/">
+      <div class="copy">
+        <p class="eyebrow">In development</p>
+        <img class="card-wordmark" src="/attendra/wordmark-light-1080.png"
+             srcset="/attendra/wordmark-light-360.png 360w,
+                     /attendra/wordmark-light-720.png 720w,
+                     /attendra/wordmark-light-1080.png 1080w"
+             sizes="(max-width:900px) 240px, 300px"
+             width="1932" height="461" alt="Attendra">
+        <p>Keep one list of the people in your life, then build events from it and track who was invited, who replied, and who is actually coming.</p>
+        <span class="cta soft">Read more →</span>
+      </div>
+      <div class="shot">
+        <div class="soon">
+          <img src="/attendra/icon.png" alt="Attendra app icon">
           <p class="soon-label">Coming soon</p>
           <p class="soon-sub">iPhone &amp; Android</p>
         </div>
